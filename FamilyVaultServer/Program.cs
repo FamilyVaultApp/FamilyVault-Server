@@ -1,5 +1,4 @@
-
-using FamilyVaultServer.Services;
+using FamilyVaultServer.Services.PrivMx;
 
 namespace FamilyVaultServer
 {
@@ -15,7 +14,8 @@ namespace FamilyVaultServer
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSingleton<IPrivMXIntegrationService, PrivMXIntegrationService>();
+            builder.Services.Configure<PrivMxOptions>(builder.Configuration.GetSection(PrivMxOptions.PrivMx));
+            builder.Services.AddSingleton<IPrivMxBridgeService, PrivMxBridgeService>();
 
             var app = builder.Build();
 
