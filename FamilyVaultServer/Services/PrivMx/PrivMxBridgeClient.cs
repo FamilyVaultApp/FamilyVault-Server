@@ -24,10 +24,19 @@ namespace FamilyVaultServer.Services.PrivMx
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
-            // TODO: Uwzględnienie błędów zwracanych przez PrivMx Bridge.
+            var content = await response.Content.ReadAsStringAsync();
+            var jsonResponse = JsonSerializer.Deserialize<JsonElement>(content);
+
             if (!response.IsSuccessStatusCode)
             {
-                throw new PrivMxBridgeException("Error while connecting to PrivMX Bridge");
+                throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {content}");
+            }
+
+            // Sprawdzenie, czy w JSON znajduje się klucz "error"
+            if (jsonResponse.TryGetProperty("error", out var error))
+            {
+                var errorMessage = error.GetProperty("message").GetString();
+                throw new PrivMxBridgeException($"PrivMX Bridge Error: {errorMessage}");
             }
 
             var responseStream = await response.Content.ReadAsStreamAsync();

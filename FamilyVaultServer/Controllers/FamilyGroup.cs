@@ -18,6 +18,7 @@ namespace FamilyVaultServer.Controllers
         [HttpPost]
         public async Task Create(CreateFamilyGroupRequest request)
         {
+            // TODO: Reagować na błędy i poprawić response
             await _privMx.CreateSolution(request.Name);
         }
     }
