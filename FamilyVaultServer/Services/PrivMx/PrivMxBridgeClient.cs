@@ -29,10 +29,9 @@ namespace FamilyVaultServer.Services.PrivMx
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {content}");
+                throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {response.IsSuccessStatusCode}");
             }
 
-            // Sprawdzenie, czy w JSON znajduje się klucz "error"
             if (jsonResponse.TryGetProperty("error", out var error))
             {
                 var errorMessage = error.GetProperty("message").GetString();
