@@ -49,9 +49,14 @@ namespace FamilyVaultServer.Services.PrivMx
 
         private HttpClient InitializeHttpClient()
         {
-            var client = new HttpClient { BaseAddress = new Uri(_options.Url) };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", GetAuthorizationHeader());
-            return client;
+            return new HttpClient
+            {
+                DefaultRequestHeaders =
+                {
+                    Authorization = new AuthenticationHeaderValue("Basic", GetAuthorizationHeader())
+                },
+                BaseAddress = new Uri(_options.Url)
+            };
         }
 
         private string GetAuthorizationHeader()
@@ -59,6 +64,7 @@ namespace FamilyVaultServer.Services.PrivMx
             var apiKeyId = _options.ApiKeyId ?? "";
             var apiSecret = _options.ApiKeySecret ?? "";
             byte[] bytes = System.Text.Encoding.UTF8.GetBytes($"{apiKeyId}:{apiSecret}");
+
             return Convert.ToBase64String(bytes);
         }
     }
