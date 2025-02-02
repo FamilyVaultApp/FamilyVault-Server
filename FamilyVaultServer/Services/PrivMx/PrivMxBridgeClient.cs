@@ -7,7 +7,7 @@ namespace FamilyVaultServer.Services.PrivMx
 {
     public class PrivMxBridgeClient : IPrivMxBridgeClient
     {
-        private readonly HttpClient _httpClient;
+        private HttpClient _httpClient;
         private readonly PrivMxOptions _options;
 
         public PrivMxBridgeClient(PrivMxOptions options)
@@ -30,7 +30,6 @@ namespace FamilyVaultServer.Services.PrivMx
                 throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {response.StatusCode}");
             }
 
-            // Odczytanie odpowiedzi jako strumień (stream)
             var responseStream = await response.Content.ReadAsStreamAsync();
 
             var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<JsonRpcResponse>(responseStream);
@@ -45,7 +44,6 @@ namespace FamilyVaultServer.Services.PrivMx
                 throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
             }
 
-            // Deserializacja wyniku z responseStream
             return await JsonSerializer.DeserializeAsync<object>(responseStream) ?? new { };
         }
 
