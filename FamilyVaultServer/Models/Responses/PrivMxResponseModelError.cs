@@ -1,6 +1,6 @@
 ﻿namespace FamilyVaultServer.Models.Responses
 {
-    public class JsonRpcResponseError
+    public class PrivMxResponseModelError
     {
         public int Code { get; set; }
         public string Message { get; set; } = string.Empty;

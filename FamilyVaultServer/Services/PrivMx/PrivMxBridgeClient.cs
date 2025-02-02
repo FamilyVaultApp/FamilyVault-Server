@@ -32,7 +32,7 @@ namespace FamilyVaultServer.Services.PrivMx
 
             var responseStream = await response.Content.ReadAsStreamAsync();
 
-            var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<JsonRpcResponse>(responseStream);
+            var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<PrivMxResponseModel>(responseStream);
 
             if (privMxBridgeResponse?.Error != null)
             {
