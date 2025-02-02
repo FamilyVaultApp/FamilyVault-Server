@@ -1,4 +1,5 @@
 ﻿using FamilyVaultServer.Models;
+using FamilyVaultServer.Models.Responses;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -24,16 +25,28 @@ namespace FamilyVaultServer.Services.PrivMx
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
-            // TODO: Uwzględnienie błędów zwracanych przez PrivMx Bridge.
             if (!response.IsSuccessStatusCode)
             {
-                throw new PrivMxBridgeException("Error while connecting to PrivMX Bridge");
+                throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {response.StatusCode}");
             }
 
             var responseStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<object>(responseStream) ?? new { };
+
+            var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<PrivMxResponseModel>(responseStream);
+
+            if (privMxBridgeResponse?.Error != null)
+            {
+                throw new PrivMxBridgeException($"PrivMX Bridge Error: {privMxBridgeResponse.Error.Code}: {privMxBridgeResponse.Error.Message}");
+            }
+
+            if (privMxBridgeResponse?.Result is null)
+            {
+                throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
+            }
+
+            return privMxBridgeResponse;
         }
-        
+
         private HttpClient InitializeHttpClient()
         {
             return new HttpClient
@@ -45,6 +58,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 BaseAddress = new Uri(_options.Url)
             };
         }
+
         private string GetAuthorizationHeader()
         {
             var apiKeyId = _options.ApiKeyId ?? "";
