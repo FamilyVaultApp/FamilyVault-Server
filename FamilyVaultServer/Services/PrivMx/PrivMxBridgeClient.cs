@@ -24,28 +24,31 @@ namespace FamilyVaultServer.Services.PrivMx
         public async Task<object> ExecuteMethod(PrivMxCommunicationModel model)
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
-            var content = await response.Content.ReadAsStringAsync();
-            
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {response.StatusCode}");
             }
-            
-            var privMxBridgeResponse = JsonSerializer.Deserialize<JsonRpcResponse>(content);
-            
+
+            // Odczytanie odpowiedzi jako strumień (stream)
+            var responseStream = await response.Content.ReadAsStreamAsync();
+
+            var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<JsonRpcResponse>(responseStream);
+
             if (privMxBridgeResponse?.Error != null)
             {
                 throw new PrivMxBridgeException($"PrivMX Bridge Error: {privMxBridgeResponse.Error.Code}: {privMxBridgeResponse.Error.Message}");
             }
 
-            if (privMxBridgeResponse?.Result is null) 
+            if (privMxBridgeResponse?.Result is null)
             {
                 throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
             }
-            
-            return privMxBridgeResponse.Result;
+
+            // Deserializacja wyniku z responseStream
+            return await JsonSerializer.DeserializeAsync<object>(responseStream) ?? new { };
         }
-        
+
         private HttpClient InitializeHttpClient()
         {
             var client = new HttpClient { BaseAddress = new Uri(_options.Url) };
