@@ -21,7 +21,7 @@ namespace FamilyVaultServer.Services.PrivMx
             return await ExecuteMethod(PrivMxCommunicationModel.Create(method, parameters));
         }
 
-        public async Task<JsonRpcResponse> ExecuteMethod(PrivMxCommunicationModel model)
+        public async Task<object> ExecuteMethod(PrivMxCommunicationModel model)
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
