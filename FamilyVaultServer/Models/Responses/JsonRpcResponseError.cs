@@ -1,4 +1,4 @@
-﻿namespace FamilyVaultServer.Exceptions
+﻿namespace FamilyVaultServer.Models.Responses
 {
     public class JsonRpcResponseError
     {

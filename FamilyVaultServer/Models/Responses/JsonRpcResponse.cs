@@ -1,7 +1,7 @@
-﻿using FamilyVaultServer.Services.PrivMx;
+﻿using FamilyVaultServer.Exceptions;
 using System.Text.Json;
 
-namespace FamilyVaultServer.Exceptions
+namespace FamilyVaultServer.Models.Responses
 {
     public class JsonRpcResponse
     {

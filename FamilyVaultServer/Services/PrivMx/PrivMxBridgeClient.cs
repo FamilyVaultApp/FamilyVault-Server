@@ -1,5 +1,5 @@
-﻿using FamilyVaultServer.Exceptions;
-using FamilyVaultServer.Models;
+﻿using FamilyVaultServer.Models;
+using FamilyVaultServer.Models.Responses;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
