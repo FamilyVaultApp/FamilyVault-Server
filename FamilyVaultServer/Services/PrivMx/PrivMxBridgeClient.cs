@@ -21,7 +21,7 @@ namespace FamilyVaultServer.Services.PrivMx
             return await ExecuteMethod(PrivMxCommunicationModel.Create(method, parameters));
         }
 
-        public async Task<object> ExecuteMethod(PrivMxCommunicationModel model)
+        public async Task<JsonRpcResponse> ExecuteMethod(PrivMxCommunicationModel model)
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
@@ -44,7 +44,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
             }
 
-            return await JsonSerializer.DeserializeAsync<object>(responseStream) ?? new { };
+            return privMxBridgeResponse;
         }
 
         private HttpClient InitializeHttpClient()
