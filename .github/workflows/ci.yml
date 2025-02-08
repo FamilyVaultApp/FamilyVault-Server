@@ -6,10 +6,13 @@ on:
 
 jobs:
   build:
-    runs-on: familyvault-dotnet
+    name: "Build"
+    runs-on: "familyvault-server"
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
     steps:
       - uses: actions/checkout@v4
-      - name: Restore dependencies
+      - name: "Restore project"
         run: dotnet restore
-      - name: Build
+      - name: "Build"
         run: dotnet build --no-restore

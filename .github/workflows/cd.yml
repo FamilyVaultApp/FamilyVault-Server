@@ -7,30 +7,38 @@ on:
 jobs:
   build-server:
     name: "Build"
-    runs-on: "familyvault_deploy"
+    runs-on: "familyvault-server"
     container:
       image: mcr.microsoft.com/dotnet/sdk:8.0
-      volumes:
-        - build_output:/build_output
     steps:
       - uses: actions/checkout@v4
       - name: "Build .NET project"
-        run: dotnet build -o build_output
+        run: dotnet build -o ./build_output
+      - name: "Fix build output permissions"
+        run: chmod o+w -R ./build_output
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_artifact
+          path: ./build_output
 
   build-image:
     name: "Prepare image"
     needs: "build-server"
-    runs-on: "familyvault_deploy"
+    runs-on: "familyvault-server"
     steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build_artifact
+          path: ./build_output
       - name: "Create Docker image"
         run: docker build . --force-rm --no-cache -f cd.Dockerfile -t familyvault/server
-      - name: "Remove build"
-        run: rm -r build_output
 
   restart:
     name: "Restart FamilyVault server"
     needs: ["build-server", "build-image"]
-    runs-on: "familyvault_deploy"
+    runs-on: "familyvault-server"
     steps:
       - name: "Down FamilyVault stack"
         run: docker-compose down
