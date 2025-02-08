@@ -1,4 +1,4 @@
-name: .NET
+name: FamilyVault Server CI
 
 on:
   push:
@@ -8,15 +8,9 @@ on:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: familyvault-dotnet
     steps:
     - uses: actions/checkout@v4
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
