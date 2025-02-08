@@ -1,29 +1,29 @@
 # You can find original PrivMx configuration here:
 # https://github.com/simplito/privmx-bridge-docker
 
+# FamilyVault develop environment
 services:
-
   mongodb:
     image: mongo:7.0
     command: ["--replSet", "rs0", "--bind_ip_all"]
     ports:
       - "27017:27017"
     volumes:
-      - './volumes/mongo/db:/data/db'
-      - './volumes/mongo/configdb:/data/configdb'
+      - "./volumes/mongo/db:/data/db"
+      - "./volumes/mongo/configdb:/data/configdb"
     healthcheck:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
       start_period: 10s
       start_interval: 1s
 
   privmx-bridge:
-    image: 'simplito/privmx-bridge'
+    image: "simplito/privmx-bridge"
     environment:
       PRIVMX_MONGO_URL: "mongodb://mongodb/"
       PRIVMX_CORS_ENABLED: "true"
     volumes:
-      - './volumes/bridge/storage:/work/privmx-bridge/storage'
-      - './volumes/bridge/plugins:/work/privmx-bridge/plugins'
+      - "./volumes/bridge/storage:/work/privmx-bridge/storage"
+      - "./volumes/bridge/plugins:/work/privmx-bridge/plugins"
     ports:
       - "9111:3000"
     depends_on:
@@ -32,3 +32,11 @@ services:
       test: pmxbridge_up
       start_period: 20s
       start_interval: 1s
+
+  familyvault:
+    image: "familyvault/server"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+      - privmx-bridge
