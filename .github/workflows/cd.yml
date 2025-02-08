@@ -1,0 +1,39 @@
+name: FamilyVault Server CD
+
+on:
+   push:
+      branches: ["feature/deployment"]
+
+jobs:
+  build-server:
+    name: "Build a new server"  
+    runs-on: "familyvault_deploy" 
+    container:
+       image: mcr.microsoft.com/dotnet/sdk:8.0
+       volumes:
+        - build_output:/build_output
+    steps:
+     - uses: actions/checkout@v4
+     - name: "Build project"
+       run: dotnet build -o build_output
+  build-image:
+    name: "Build a new server image"  
+    needs: "build"
+    runs-on: "familyvault_deploy"
+    steps:
+     - name: "Create docker image"
+       run: docker build . > image_id
+  shutdown:
+    name: "Shutdown old server"
+    needs: ["build", "build-image"]
+    runs-on: "familyvault_deploy"
+    steps:
+     - name: "Stop docker server"
+       run: docker stop familyvault_server
+  start:
+    name: "Start a new server"
+    needs: ["build", "build-image", "shutdown"]
+    runs-on: "familyvaulty_deploy"
+    steps:
+     - name: "Start docker service"
+       run: docker start $(cat image_id)
