@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: "Create Docker image"
         run: docker build . --force-rm --no-cache -f cd.Dockerfile -t familyvault/server
+      - name: "Remove build"
+        run: rm -r build_output
 
   restart:
     name: "Restart FamilyVault server"

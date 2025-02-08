@@ -9,8 +9,8 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - "./volumes/mongo/db:/data/db"
-      - "./volumes/mongo/configdb:/data/configdb"
+      - "/home/pzesp/volumes/mongo/db:/data/db"
+      - "/home/pzesp/volumes/mongo/configdb:/data/configdb"
     healthcheck:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
       start_period: 10s
@@ -22,8 +22,8 @@ services:
       PRIVMX_MONGO_URL: "mongodb://mongodb/"
       PRIVMX_CORS_ENABLED: "true"
     volumes:
-      - "./volumes/bridge/storage:/work/privmx-bridge/storage"
-      - "./volumes/bridge/plugins:/work/privmx-bridge/plugins"
+      - "/home/pzesp/volumes/bridge/storage:/work/privmx-bridge/storage"
+      - "/home/pzesp/volumes/bridge/plugins:/work/privmx-bridge/plugins"
     ports:
       - "9111:3000"
     depends_on:
