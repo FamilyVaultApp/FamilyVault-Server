@@ -1,0 +1,36 @@
+name: FamilyVault Server CD
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-server:
+    name: "Build"
+    runs-on: "familyvault_deploy"
+    container:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      volumes:
+        - build_output:/build_output
+    steps:
+      - uses: actions/checkout@v4
+      - name: "Build .NET project"
+        run: dotnet build -o build_output
+
+  build-image:
+    name: "Prepare image"
+    needs: "build-server"
+    runs-on: "familyvault_deploy"
+    steps:
+      - name: "Create Docker image"
+        run: docker build . --force-rm --no-cache -f cd.Dockerfile -t familyvault/server
+
+  restart:
+    name: "Restart FamilyVault server"
+    needs: ["build-server", "build-image"]
+    runs-on: "familyvault_deploy"
+    steps:
+      - name: "Down FamilyVault stack"
+        run: docker-compose down
+      - name: "Up FamilyVault stack"
+        run: docker-compose up -d
