@@ -4,4 +4,7 @@ ADD build_output /familyvault
 
 EXPOSE 8080/tcp
 
-CMD [ "dotnet", "familyvault/FamilyVaultServer.dll" ]
+ENV ASPNETCORE_ENVIRONMENT="Development"
+WORKDIR "/familyvault"
+
+CMD [ "dotnet", "FamilyVaultServer.dll" ]
