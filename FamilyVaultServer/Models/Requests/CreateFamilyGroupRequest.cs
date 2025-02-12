@@ -5,12 +5,12 @@ namespace FamilyVaultServer.Models.Requests
     public class CreateFamilyGroupRequest
     {
         [Required]
-        public string Solution { get; set; }
+        public required string Solution { get; set; }
         [Required]
-        public string Name { get; set; }
+        public required string Name { get; set; }
         [Required]
-        public string Description { get; set; }
+        public required string Description { get; set; }
         [Required]
-        public string Scope { get; set; }
+        public required string Scope { get; set; }
     }
 }

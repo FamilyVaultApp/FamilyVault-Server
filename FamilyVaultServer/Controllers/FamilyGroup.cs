@@ -18,8 +18,14 @@ namespace FamilyVaultServer.Controllers
         [HttpPost]
         public async Task Create(CreateFamilyGroupRequest request)
         {
-            // TODO: Reagować na błędy i poprawić response
-            await _privMx.CreateFamilyGroup(request.Solution, request.Name, request.Description, request.Scope);
+            try
+            {
+                await _privMx.CreateFamilyGroup(request.Solution, request.Name, request.Description, request.Scope);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
