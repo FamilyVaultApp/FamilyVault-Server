@@ -5,7 +5,7 @@ namespace FamilyVaultServer.Services.PrivMx
 {
     public interface IPrivMxBridgeClient
     {
-        Task<object> ExecuteMethod(string methodName, object parameters);
+        Task<PrivMxResponseModel> ExecuteMethod(string methodName, object parameters);
         Task<PrivMxResponseModel> ExecuteMethod(PrivMxCommunicationModel model);
     }
 }

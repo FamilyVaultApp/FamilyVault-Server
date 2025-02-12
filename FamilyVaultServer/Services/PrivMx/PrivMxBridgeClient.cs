@@ -16,7 +16,7 @@ namespace FamilyVaultServer.Services.PrivMx
             _httpClient = InitializeHttpClient();
         }
 
-        public async Task<object> ExecuteMethod(string method, object parameters)
+        public async Task<PrivMxResponseModel> ExecuteMethod(string method, object parameters)
         {
             return await ExecuteMethod(PrivMxCommunicationModel.Create(method, parameters));
         }

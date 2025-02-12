@@ -4,7 +4,7 @@ namespace FamilyVaultServer.Services.PrivMx
 {
     public interface IPrivMxBridgeService
     {
-        Task<PrivMxResponseModel> CreateSolution(string name);
-        Task<PrivMxResponseModel> CreateFamilyGroup(string solution, string name, string description, string scope);
+        Task<PrivMxResponseModel> CreateAndAssignSolutionToService(string name);
+        Task<PrivMxResponseModel> CreateContext(string solution, string name, string description, string scope);
     }
 }

@@ -7,6 +7,7 @@ namespace FamilyVaultServer.Services.PrivMx
     {
         private IPrivMxBridgeClient _client;
         private IOptions<PrivMxOptions> _options;
+        private string? _solutionId;
 
         public PrivMxBridgeService(IOptions<PrivMxOptions> options)
         {
@@ -14,17 +15,17 @@ namespace FamilyVaultServer.Services.PrivMx
             _client = new PrivMxBridgeClient(_options.Value);
         }
 
-        public async Task<PrivMxResponseModel> CreateSolution(string name)
+        public async Task<PrivMxResponseModel> CreateAndAssignSolutionToService(string name)
         {
-            return (PrivMxResponseModel) await _client.ExecuteMethod("solution/createSolution", new
+            return await _client.ExecuteMethod("solution/createSolution", new
             {
                 Name = name
             });
         }
 
-        public async Task<PrivMxResponseModel> CreateFamilyGroup(string solution, string name, string description, string scope)
+        public async Task<PrivMxResponseModel> CreateContext(string solution, string name, string description, string scope)
         {
-            return (PrivMxResponseModel) await _client.ExecuteMethod("context/createContext", new
+            return await _client.ExecuteMethod("context/createContext", new
             {
                 Solution = solution,
                 Name = name,

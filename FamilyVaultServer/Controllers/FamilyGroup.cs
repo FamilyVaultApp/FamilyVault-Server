@@ -20,7 +20,7 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var response = await _privMx.CreateFamilyGroup(request.Solution, request.Name, request.Description, request.Scope);
+                var response = await _privMx.CreateContext(request.Solution, request.Name, request.Description, request.Scope);
                 
                 return Ok(new { result = response.Result });    
             }
