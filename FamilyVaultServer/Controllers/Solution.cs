@@ -6,20 +6,20 @@ namespace FamilyVaultServer.Controllers
 {
     [Route("[controller]/[action]")]
     [ApiController]
-    public class FamilyGroup : ControllerBase
+    public class Solution : ControllerBase
     {
         IPrivMxBridgeService _privMx;
-        public FamilyGroup(IPrivMxBridgeService privMx)
+        public Solution(IPrivMxBridgeService privMx)
         {
             _privMx = privMx;
         }
 
         [Route("")]
         [HttpPost]
-        public async Task Create(CreateFamilyGroupRequest request)
+        public async Task Create(CreateSolutionRequest request)
         {
             // TODO: Reagować na błędy i poprawić response
-            await _privMx.CreateFamilyGroup(request.Solution, request.Name, request.Description, request.Scope);
+            await _privMx.CreateSolution(request.Name);
         }
     }
 }

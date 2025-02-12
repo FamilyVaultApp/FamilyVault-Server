@@ -21,6 +21,17 @@ namespace FamilyVaultServer.Services.PrivMx
             });
         }
 
+        public Task CreateFamilyGroup(string solution, string name, string description, string scope) 
+        {
+            return _client.ExecuteMethod("context/getContext", new
+            { 
+                SolutionId = solution,
+                Name = name,
+                Description = description,
+                Scope = scope,
+            });
+        }
+
 
     }
 }
