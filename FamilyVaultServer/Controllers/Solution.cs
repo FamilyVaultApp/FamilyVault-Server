@@ -16,10 +16,11 @@ namespace FamilyVaultServer.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task Create(CreateSolutionRequest request)
+        public async Task<IActionResult> Create(CreateSolutionRequest request)
         {
-            // TODO: Reagować na błędy i poprawić response
-            await _privMx.CreateSolution(request.Name);
+            var response = await _privMx.CreateSolution(request.Name);
+
+            return Ok(new { result = response.Result });
         }
     }
 }

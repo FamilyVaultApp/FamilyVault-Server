@@ -21,7 +21,7 @@ namespace FamilyVaultServer.Services.PrivMx
             return await ExecuteMethod(PrivMxCommunicationModel.Create(method, parameters));
         }
 
-        public async Task<object> ExecuteMethod(PrivMxCommunicationModel model)
+        public async Task<PrivMxResponseModel> ExecuteMethod(PrivMxCommunicationModel model)
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
@@ -39,13 +39,14 @@ namespace FamilyVaultServer.Services.PrivMx
                 throw new PrivMxBridgeException($"PrivMX Bridge Error: {privMxBridgeResponse.Error.Code}: {privMxBridgeResponse.Error.Message}");
             }
 
-            if (privMxBridgeResponse?.Result is null)
+            if (privMxBridgeResponse?.Result == null)
             {
                 throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
             }
 
             return privMxBridgeResponse;
         }
+
 
         private HttpClient InitializeHttpClient()
         {
