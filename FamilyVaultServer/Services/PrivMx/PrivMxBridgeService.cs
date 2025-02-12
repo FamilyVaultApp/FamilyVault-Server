@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using FamilyVaultServer.Models.Responses;
+using Microsoft.Extensions.Options;
 
 namespace FamilyVaultServer.Services.PrivMx
 {
@@ -6,6 +7,7 @@ namespace FamilyVaultServer.Services.PrivMx
     {
         private IPrivMxBridgeClient _client;
         private IOptions<PrivMxOptions> _options;
+        private string? _solutionId;
 
         public PrivMxBridgeService(IOptions<PrivMxOptions> options)
         {
@@ -13,14 +15,23 @@ namespace FamilyVaultServer.Services.PrivMx
             _client = new PrivMxBridgeClient(_options.Value);
         }
 
-        public Task CreateSolution(string name)
+        public async Task<PrivMxResponseModel> CreateAndAssignSolutionToService(string name)
         {
-            return _client.ExecuteMethod("solution/createSolution", new
+            return await _client.ExecuteMethod("solution/createSolution", new
             {
                 Name = name
             });
         }
 
-
+        public async Task<PrivMxResponseModel> CreateContext(string solution, string name, string description, string scope)
+        {
+            return await _client.ExecuteMethod("context/createContext", new
+            {
+                Solution = solution,
+                Name = name,
+                Description = description,
+                Scope = scope,
+            });
+        }
     }
 }

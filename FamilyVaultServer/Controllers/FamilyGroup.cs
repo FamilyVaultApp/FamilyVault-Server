@@ -16,10 +16,18 @@ namespace FamilyVaultServer.Controllers
 
         [Route("")]
         [HttpPost]
-        public async Task Create(CreateFamilyGroupRequest request)
+        public async Task<IActionResult> Create(CreateFamilyGroupRequest request)
         {
-            // TODO: Reagować na błędy i poprawić response
-            await _privMx.CreateSolution(request.Name);
+            try
+            {
+                var response = await _privMx.CreateContext(request.Solution, request.Name, request.Description, request.Scope);
+                
+                return Ok(new { result = response.Result });    
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { error = e.Message });
+            }
         }
     }
 }
