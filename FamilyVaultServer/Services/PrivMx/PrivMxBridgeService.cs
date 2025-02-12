@@ -25,7 +25,7 @@ namespace FamilyVaultServer.Services.PrivMx
         {
             return _client.ExecuteMethod("context/createContext", new
             { 
-                SolutionId = solution,
+                Solution = solution,
                 Name = name,
                 Description = description,
                 Scope = scope,

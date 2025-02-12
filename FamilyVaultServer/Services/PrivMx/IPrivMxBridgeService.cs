@@ -3,6 +3,6 @@
     public interface IPrivMxBridgeService
     {
         Task CreateSolution(string name);
-        Task CreateFamilyGroup(string solutionId, string name, string description, string scope);
+        Task CreateFamilyGroup(string solution, string name, string description, string scope);
     }
 }
