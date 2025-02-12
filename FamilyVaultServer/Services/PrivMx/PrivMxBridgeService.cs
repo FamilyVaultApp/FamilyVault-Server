@@ -23,7 +23,7 @@ namespace FamilyVaultServer.Services.PrivMx
 
         public Task CreateFamilyGroup(string solution, string name, string description, string scope) 
         {
-            return _client.ExecuteMethod("context/getContext", new
+            return _client.ExecuteMethod("context/createContext", new
             { 
                 SolutionId = solution,
                 Name = name,
