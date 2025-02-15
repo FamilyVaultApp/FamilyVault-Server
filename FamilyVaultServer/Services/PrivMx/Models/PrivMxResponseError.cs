@@ -1,14 +1,14 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace FamilyVaultServer.Models.Responses
+namespace FamilyVaultServer.Services.PrivMx.Models
 {
-    public class PrivMxResponseModelError
+    public class PrivMxResponseError
     {
         [JsonPropertyName("code")]
         public int Code { get; set; }
         [JsonPropertyName("message")]
         public string Message { get; set; } = string.Empty;
         [JsonPropertyName("data")]
-        public object? Data { get; set; }
+        public string Data { get; set; } = string.Empty;
     }
 }

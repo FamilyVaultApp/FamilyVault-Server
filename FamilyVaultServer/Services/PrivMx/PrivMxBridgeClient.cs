@@ -1,5 +1,6 @@
-﻿using FamilyVaultServer.Models;
-using FamilyVaultServer.Models.Responses;
+﻿using FamilyVaultServer.Services.PrivMx.Models;
+using FamilyVaultServer.Services.PrivMx.Models.Params;
+using FamilyVaultServer.Services.PrivMx.Models.Result;
 using System.Net.Http.Headers;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace FamilyVaultServer.Services.PrivMx
 {
     public class PrivMxBridgeClient : IPrivMxBridgeClient
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
         private readonly PrivMxOptions _options;
 
         public PrivMxBridgeClient(PrivMxOptions options)
@@ -15,39 +16,42 @@ namespace FamilyVaultServer.Services.PrivMx
             _options = options;
             _httpClient = InitializeHttpClient();
         }
-
-        public async Task<PrivMxResponseModel> ExecuteMethod(string method, object parameters)
+        
+        public async Task<TResponseResult> ExecuteMethod<TRequestParameters, TResponseResult>(string methodName, TRequestParameters parameters)
+            where TRequestParameters : PrivMxRequestParameters
+            where TResponseResult : PrivMxResponseResult
         {
-            return await ExecuteMethod(PrivMxCommunicationModel.Create(method, parameters));
+            return await SendRequest<TRequestParameters, TResponseResult>(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
         }
-
-        public async Task<PrivMxResponseModel> ExecuteMethod(PrivMxCommunicationModel model)
+        
+        public async Task<TResponseResult> SendRequest<TRequestParameters, TResponseResult>(PrivMxRequest<TRequestParameters> model)
+            where TRequestParameters : PrivMxRequestParameters
+            where TResponseResult : PrivMxResponseResult
         {
             var response = await _httpClient.PostAsJsonAsync("api", model);
 
             if (!response.IsSuccessStatusCode)
             {
-                throw new PrivMxBridgeException($"Error while connecting to PrivMX Bridge: {response.StatusCode}");
+                throw new PrivMxBridgeException($"Error while sending request to PrivMX Bridge: {response.StatusCode}");
             }
 
-            var responseStream = await response.Content.ReadAsStreamAsync();
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-            var privMxBridgeResponse = await JsonSerializer.DeserializeAsync<PrivMxResponseModel>(responseStream);
+            var privMxBridgeResponse = JsonSerializer.Deserialize<PrivMxResponse<TResponseResult>>(responseContent);
 
-            if (privMxBridgeResponse?.Error != null)
+            if (privMxBridgeResponse?.Error is not null)
             {
                 throw new PrivMxBridgeException($"PrivMX Bridge Error: {privMxBridgeResponse.Error.Code}: {privMxBridgeResponse.Error.Message}");
             }
 
-            if (privMxBridgeResponse?.Result == null)
+            if (privMxBridgeResponse?.Result is null)
             {
                 throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
             }
 
-            return privMxBridgeResponse;
+            return privMxBridgeResponse.Result;
         }
-
-
+        
         private HttpClient InitializeHttpClient()
         {
             return new HttpClient
@@ -59,7 +63,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 BaseAddress = new Uri(_options.Url)
             };
         }
-
+        
         private string GetAuthorizationHeader()
         {
             var apiKeyId = _options.ApiKeyId ?? "";
