@@ -4,7 +4,7 @@ namespace FamilyVaultServer
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +15,7 @@ namespace FamilyVaultServer
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<PrivMxOptions>(builder.Configuration.GetSection(PrivMxOptions.PrivMx));
-            builder.Services.AddSingleton<IPrivMxBridgeService, PrivMxBridgeService>();
+            builder.Services.AddSingleton<IPrivMxService, PrivMxService>();
               
             var app = builder.Build();
 

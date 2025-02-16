@@ -8,8 +8,8 @@ namespace FamilyVaultServer.Controllers
     [ApiController]
     public class FamilyGroup : ControllerBase
     {
-        IPrivMxBridgeService _privMx;
-        public FamilyGroup(IPrivMxBridgeService privMx)
+        IPrivMxService _privMx;
+        public FamilyGroup(IPrivMxService privMx)
         {
             _privMx = privMx;
         }
@@ -20,9 +20,9 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var response = await _privMx.CreateContext(request.Solution, request.Name, request.Description, request.Scope);
+                var response = await _privMx.CreateContext(request.Name, request.Description, "private");
                 
-                return Ok(new { result = response.Result });    
+                return Ok(new { result = response });    
             }
             catch (Exception e)
             {
