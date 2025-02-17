@@ -14,7 +14,6 @@ namespace FamilyVaultServer.Controllers
             _privMx = privMx;
         }
 
-        [Route("")]
         [HttpPost]
         public async Task<IActionResult> Create(CreateFamilyGroupRequest request)
         {

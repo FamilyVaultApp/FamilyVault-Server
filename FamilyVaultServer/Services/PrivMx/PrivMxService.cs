@@ -17,11 +17,16 @@ namespace FamilyVaultServer.Services.PrivMx
             _solutionProvider = new PrivMxSolutionProvider(this, _options.Value.SolutionName);
         }
 
+        public Task<string> GetSolutionId()
+        {
+            return _solutionProvider.GetSolutionId();
+        }
+
         public async Task<PrivMxCreateContextResult> CreateContext(string name, string description, string scope)
         {
             return await _client.ExecuteMethod<PrivMxCreateContextParameters, PrivMxCreateContextResult>("context/createContext", new PrivMxCreateContextParameters
             {
-                Solution = await _solutionProvider.GetSolutionId(),
+                Solution = await GetSolutionId(),
                 Name = name,
                 Description = description,
                 Scope = scope,
