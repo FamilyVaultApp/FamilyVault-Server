@@ -13,7 +13,7 @@ services:
       - "/home/pzesp/volumes/mongo/configdb:/data/configdb"
     healthcheck:
       test: echo "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb:27017'}]}) }" | mongosh --port 27017 --quiet
-      start_period: 10s
+      start_period: 10ssdfasdfasdfsaddf
       start_interval: 1s
 
   privmx-bridge:
