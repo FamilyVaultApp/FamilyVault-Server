@@ -9,19 +9,11 @@ namespace FamilyVaultServer.Controllers
     [ApiController]
     public class ApplicationConfig : ControllerBase
     {
-        private readonly IOptions<PrivMxOptions> _privMxOptions;
         private readonly IPrivMxService _privMxService;
 
         public ApplicationConfig(IOptions<PrivMxOptions> privMxOptions, IPrivMxService privMxService)
         {
-            _privMxOptions = privMxOptions;
             _privMxService = privMxService;
-        }
-
-        [HttpGet]
-        public ActionResult<GetPrivMxUrlResponse> GetPrivMxUrl()
-        {
-            return Ok(new GetPrivMxUrlResponse { Url = _privMxOptions.Value.Url });
         }
 
         [HttpGet]
