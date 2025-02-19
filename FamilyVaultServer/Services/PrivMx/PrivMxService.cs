@@ -38,5 +38,22 @@ namespace FamilyVaultServer.Services.PrivMx
             {
                 Name = name
             });
+        public async Task<PrivMxAddUserToContextResult> AddUserToContext(string contextId, string userId, string userPubKey, string acl)
+        {
+            await _client.ExecuteMethod<PrivMxAddUserToContextParameters, PrivMxAddUserToContextResult>("context/addUserToContext", new PrivMxAddUserToContextParameters
+            {
+                ContextId = contextId,
+                UserId = userId,
+                UserPubKey = userPubKey,
+                Acl = acl,
+            });
+
+            var result = new PrivMxAddUserToContextResult
+            {
+                Result = "OK"
+            };
+
+            return result;
+        }
     }
 }
