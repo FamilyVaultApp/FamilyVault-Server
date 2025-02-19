@@ -7,5 +7,6 @@ namespace FamilyVaultServer.Services.PrivMx
         Task<string> GetSolutionId();
         Task<PrivMxCreateSolutionResult> CreateSolution(string name);
         Task<PrivMxCreateContextResult> CreateContext(string name, string description, string scope);
+        Task<bool> AddUserToContext(string contextId, string userId, string userPubKey, string acl);
     }
 }

@@ -16,7 +16,7 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreateFamilyGroupResponse>> Create(CreateFamilyGroupRequest request)
+        public async Task<ActionResult<CreateFamilyGroupResponse>> CreateFamilyGroup(CreateFamilyGroupRequest request)
         {
             try
             {
@@ -27,6 +27,54 @@ namespace FamilyVaultServer.Controllers
             catch (Exception e)
             {
                 // TODO: Stworzyć model error respose
+                return StatusCode(500, new { error = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuardianToFamilyGroup(AddMemberToFamilyGroupRequest request)
+        {
+            // TODO Określić ACLe format:
+            // w stringu = ALLOW store/READ\nALLOW thread/ALL
+
+            try
+            {
+                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { error = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddMemberToFamilyGroup(AddMemberToFamilyGroupRequest request)
+        {
+            try
+            {
+                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { error = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuestToFamilyGroup(AddMemberToFamilyGroupRequest request)
+        {
+            try
+            {
+                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
                 return StatusCode(500, new { error = e.Message });
             }
         }

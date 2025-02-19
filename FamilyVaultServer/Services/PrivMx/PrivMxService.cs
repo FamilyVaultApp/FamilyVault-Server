@@ -9,7 +9,7 @@ namespace FamilyVaultServer.Services.PrivMx
         private IPrivMxBridgeClient _client;
         private IPrivMxSolutionProvider _solutionProvider;
         private IOptions<PrivMxOptions> _options;
-        
+
         public PrivMxService(IOptions<PrivMxOptions> options)
         {
             _options = options;
@@ -24,7 +24,7 @@ namespace FamilyVaultServer.Services.PrivMx
 
         public async Task<PrivMxCreateContextResult> CreateContext(string name, string description, string scope)
         {
-            return await _client.ExecuteMethod<PrivMxCreateContextParameters, PrivMxCreateContextResult>("context/createContext", new PrivMxCreateContextParameters
+            return await _client.ExecuteMethodWithResponse<PrivMxCreateContextParameters, PrivMxCreateContextResult>("context/createContext", new PrivMxCreateContextParameters
             {
                 Solution = await GetSolutionId(),
                 Name = name,
@@ -34,9 +34,18 @@ namespace FamilyVaultServer.Services.PrivMx
         }
 
         public Task<PrivMxCreateSolutionResult> CreateSolution(string name)
-            => _client.ExecuteMethod<PrivMxCreateSolutionParameters, PrivMxCreateSolutionResult>("solution/createSolution", new PrivMxCreateSolutionParameters
+            => _client.ExecuteMethodWithResponse<PrivMxCreateSolutionParameters, PrivMxCreateSolutionResult>("solution/createSolution", new PrivMxCreateSolutionParameters
             {
                 Name = name
+            });
+
+        public Task<bool> AddUserToContext(string contextId, string userId, string userPubKey, string acl)
+            => _client.ExecuteMethodWithOperationStatus("context/addUserToContext", new PrivMxAddUserToContextParameters
+            {
+                ContextId = contextId,
+                UserId = userId,
+                UserPubKey = userPubKey,
+                Acl = acl,
             });
     }
 }

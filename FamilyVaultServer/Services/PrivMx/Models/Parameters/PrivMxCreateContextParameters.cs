@@ -6,12 +6,12 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
     public class PrivMxCreateContextParameters : PrivMxRequestParameters
     {
         [JsonPropertyName("solution")]
-        public string Solution { get; set; } = string.Empty;
+        public required string Solution { get; set; }
         [JsonPropertyName("name")]
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
         [JsonPropertyName("description")]
-        public string Description { get; set; } = string.Empty;
+        public required string Description { get; set; }
         [JsonPropertyName("scope")]
-        public string Scope { get; set; } = string.Empty;
+        public required string Scope { get; set; }
     }
 }   
