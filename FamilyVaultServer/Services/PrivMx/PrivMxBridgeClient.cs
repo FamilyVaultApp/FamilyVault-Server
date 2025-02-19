@@ -20,25 +20,39 @@ namespace FamilyVaultServer.Services.PrivMx
         public async Task<bool> ExecuteMethodWithOperationStatus<TRequestParameters>(string methodName, TRequestParameters parameters)
             where TRequestParameters : PrivMxRequestParameters
         {
-            var stream = await SendRequestAndGetResponseStream(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
-
-            var response = JsonSerializer.Deserialize<PrivMxResponseWithOperationStatus>(stream);
-            ValidateResponseResultAndThrowException(response);
-
-            return response?.Result == "OK";
+            var result = await SendRequest<TRequestParameters, string>(methodName, parameters);
+            return result == "OK";
         }
 
         public async Task<TResponseResult> ExecuteMethodWithResponse<TRequestParameters, TResponseResult>(string methodName, TRequestParameters parameters)
             where TRequestParameters : PrivMxRequestParameters
             where TResponseResult : PrivMxResponseResult
         {
+            var result = await SendRequest<TRequestParameters, TResponseResult>(methodName, parameters);
+            return result;
+        }
+
+        private async Task<TResponseResult> SendRequest<TRequestParameters, TResponseResult>(string methodName, TRequestParameters parameters)
+            where TRequestParameters : PrivMxRequestParameters
+            where TResponseResult : class
+        {
             var stream = await SendRequestAndGetResponseStream(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
 
-            var response = JsonSerializer.Deserialize<PrivMxResponseWithResult<TResponseResult>>(stream);
-            ValidateResponseResultAndThrowException(response);
+            var response = JsonSerializer.Deserialize<PrivMxResponse<TResponseResult>>(stream);
 
-            return response?.Result!;
+            if (response?.Error is not null)
+            {
+                throw new PrivMxBridgeException($"PrivMX Bridge Error: {response.Error.Code}: {response.Error.Message}");
+            }
+
+            if (response?.Result is null)
+            {
+                throw new PrivMxBridgeException($"PrivMX Bridge result is empty");
+            }
+
+            return response.Result;
         }
+
 
         private async Task<Stream> SendRequestAndGetResponseStream<TRequestParameters>(PrivMxRequest<TRequestParameters> request)
             where TRequestParameters : PrivMxRequestParameters
@@ -51,14 +65,6 @@ namespace FamilyVaultServer.Services.PrivMx
             }
 
             return await response.Content.ReadAsStreamAsync();
-        }
-
-        private void ValidateResponseResultAndThrowException(PrivMxResponse? response) 
-        {
-            if (response?.Error is not null)
-            {
-                throw new PrivMxBridgeException($"PrivMX Bridge Error: {response.Error.Code}: {response.Error.Message}");
-            }
         }
 
         private HttpClient InitializeHttpClient()
