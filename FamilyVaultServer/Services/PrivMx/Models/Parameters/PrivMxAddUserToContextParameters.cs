@@ -6,12 +6,12 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
     public class PrivMxAddUserToContextParameters : PrivMxRequestParameters
     {
         [JsonPropertyName("contextId")]
-        public string ContextId{ get; set; } = string.Empty;
+        public required string ContextId{ get; set; }
         [JsonPropertyName("userId")]
-        public string UserId { get; set; } = string.Empty;
+        public required string UserId { get; set; }
         [JsonPropertyName("userPubKey")]
-        public string UserPubKey { get; set; } = string.Empty;
+        public required string UserPubKey { get; set; } 
         [JsonPropertyName("acl")]
-        public string Acl { get; set; } = string.Empty;
+        public string? Acl { get; set; }
     }
 }   

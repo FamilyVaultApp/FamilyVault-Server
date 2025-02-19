@@ -11,10 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Services\PrivMx\Models\Result\PrivMxCreateSolutionResult.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
 	  <None Update="appsettings.json">
 		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>

@@ -6,6 +6,6 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
     public class PrivMxCreateSolutionParameters : PrivMxRequestParameters
     {
         [JsonPropertyName("name")]
-        public string Name { get; set; } = string.Empty;
+        public required string Name { get; set; }
     }
 }

@@ -16,42 +16,51 @@ namespace FamilyVaultServer.Services.PrivMx
             _options = options;
             _httpClient = InitializeHttpClient();
         }
-        
-        public async Task<TResponseResult> ExecuteMethod<TRequestParameters, TResponseResult>(string methodName, TRequestParameters parameters)
+
+        public async Task<bool> ExecuteMethodWithOperationStatus<TRequestParameters>(string methodName, TRequestParameters parameters)
             where TRequestParameters : PrivMxRequestParameters
-            where TResponseResult : PrivMxResponseResult
         {
-            return await SendRequest<TRequestParameters, TResponseResult>(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
+            var stream = await SendRequestAndGetResponseStream(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
+
+            var response = JsonSerializer.Deserialize<PrivMxResponseWithOperationStatus>(stream);
+            ValidateResponseResultAndThrowException(response);
+
+            return response?.Result == "OK";
         }
-        
-        public async Task<TResponseResult> SendRequest<TRequestParameters, TResponseResult>(PrivMxRequest<TRequestParameters> model)
+
+        public async Task<TResponseResult> ExecuteMethodWithResponse<TRequestParameters, TResponseResult>(string methodName, TRequestParameters parameters)
             where TRequestParameters : PrivMxRequestParameters
             where TResponseResult : PrivMxResponseResult
         {
-            var response = await _httpClient.PostAsJsonAsync("api", model);
+            var stream = await SendRequestAndGetResponseStream(PrivMxRequest<TRequestParameters>.Create(methodName, parameters));
+
+            var response = JsonSerializer.Deserialize<PrivMxResponseWithResult<TResponseResult>>(stream);
+            ValidateResponseResultAndThrowException(response);
+
+            return response?.Result!;
+        }
+
+        private async Task<Stream> SendRequestAndGetResponseStream<TRequestParameters>(PrivMxRequest<TRequestParameters> request)
+            where TRequestParameters : PrivMxRequestParameters
+        {
+            var response = await _httpClient.PostAsJsonAsync("api", request);
 
             if (!response.IsSuccessStatusCode)
             {
                 throw new PrivMxBridgeException($"Error while sending request to PrivMX Bridge: {response.StatusCode}");
             }
 
-            var responseContent = await response.Content.ReadAsStringAsync();
-
-            var privMxBridgeResponse = JsonSerializer.Deserialize<PrivMxResponse<TResponseResult>>(responseContent);
-
-            if (privMxBridgeResponse?.Error is not null)
-            {
-                throw new PrivMxBridgeException($"PrivMX Bridge Error: {privMxBridgeResponse.Error.Code}: {privMxBridgeResponse.Error.Message}");
-            }
-
-            if (privMxBridgeResponse?.Result is null)
-            {
-                throw new PrivMxBridgeException($"PrivMX Bridge result is empty {privMxBridgeResponse?.Id}");
-            }
-
-            return privMxBridgeResponse.Result;
+            return await response.Content.ReadAsStreamAsync();
         }
-        
+
+        private void ValidateResponseResultAndThrowException(PrivMxResponse? response) 
+        {
+            if (response?.Error is not null)
+            {
+                throw new PrivMxBridgeException($"PrivMX Bridge Error: {response.Error.Code}: {response.Error.Message}");
+            }
+        }
+
         private HttpClient InitializeHttpClient()
         {
             return new HttpClient
@@ -63,7 +72,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 BaseAddress = new Uri(_options.Url)
             };
         }
-        
+
         private string GetAuthorizationHeader()
         {
             var apiKeyId = _options.ApiKeyId ?? "";
