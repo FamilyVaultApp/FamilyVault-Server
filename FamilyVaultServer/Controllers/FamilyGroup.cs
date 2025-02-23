@@ -1,4 +1,5 @@
-﻿using FamilyVaultServer.Models.Requests;
+﻿using FamilyVaultServer.Exceptions;
+using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,7 @@ namespace FamilyVaultServer.Controllers
             }
             catch (Exception e)
             {
-                // TODO: Stworzyć model error respose
-                return StatusCode(500, new { error = e.Message });
+                return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
 
@@ -45,7 +45,7 @@ namespace FamilyVaultServer.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, new { error = e.Message });
+                return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
 
@@ -60,7 +60,7 @@ namespace FamilyVaultServer.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, new { error = e.Message });
+                return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
 
@@ -75,7 +75,7 @@ namespace FamilyVaultServer.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, new { error = e.Message });
+                return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
     }
