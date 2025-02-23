@@ -1,5 +1,4 @@
-﻿using FamilyVaultServer.Exceptions;
-using FamilyVaultServer.Models.Requests;
+﻿using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
 using Microsoft.AspNetCore.Mvc;
