@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FamilyVaultServer.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("FamilyGroup/[action]")]
     [ApiController]
-    public class FamilyGroup : ControllerBase
+    public class FamilyGroupController : ControllerBase
     {
         IPrivMxService _privMx;
-        public FamilyGroup(IPrivMxService privMx)
+        public FamilyGroupController(IPrivMxService privMx)
         {
             _privMx = privMx;
         }
