@@ -21,8 +21,8 @@ namespace FamilyVaultServer.Controllers
             try
             {
                 var response = await _privMx.CreateContext(request.Name, request.Description, "private");
-                
-                return Ok(new CreateFamilyGroupResponse { ContextId = response.ContextId});    
+
+                return Ok(new CreateFamilyGroupResponse { ContextId = response.ContextId });
             }
             catch (Exception e)
             {
@@ -69,6 +69,21 @@ namespace FamilyVaultServer.Controllers
             try
             {
                 await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<RemoveMemberFromFamilyGroupResponse>> RemoveUserFromFamilyGroup(RemoveMemberFromFamilyGroupRequest request)
+        {
+            try
+            {
+                await _privMx.RemoveUserFromContext(request.ContextId, request.UserId);
 
                 return Ok();
             }

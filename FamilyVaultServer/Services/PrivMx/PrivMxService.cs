@@ -39,6 +39,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 Name = name
             });
 
+
         public Task<bool> AddUserToContext(string contextId, string userId, string userPubKey, string acl)
             => _client.ExecuteMethodWithOperationStatus("context/addUserToContext", new PrivMxAddUserToContextParameters
             {
@@ -46,6 +47,13 @@ namespace FamilyVaultServer.Services.PrivMx
                 UserId = userId,
                 UserPubKey = userPubKey,
                 Acl = acl,
+            });
+
+        public Task<bool> RemoveUserFromContext(string contextId, string userId)
+            => _client.ExecuteMethodWithOperationStatus("context/removeUserFromContext", new PrivMxRemoveUserFromContextParameters
+            {
+                ContextId = contextId,
+                UserId = userId
             });
     }
 }
