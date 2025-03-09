@@ -5,13 +5,13 @@ using FamilyVaultServer.Services.PrivMx;
 
 namespace FamilyVaultServer.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("ApplicationConfig/[action]")]
     [ApiController]
-    public class ApplicationConfig : ControllerBase
+    public class ApplicationConfigController : ControllerBase
     {
         private readonly IPrivMxService _privMxService;
 
-        public ApplicationConfig(IOptions<PrivMxOptions> privMxOptions, IPrivMxService privMxService)
+        public ApplicationConfigController(IOptions<PrivMxOptions> privMxOptions, IPrivMxService privMxService)
         {
             _privMxService = privMxService;
         }
