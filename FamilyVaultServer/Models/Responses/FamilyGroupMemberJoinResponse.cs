@@ -3,9 +3,9 @@ using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Models.Responses
 {
-    public class FamilyGroupMemberJoinStatusResponse
+    public class FamilyGroupMemberJoinResponse
     {
         [JsonPropertyName("familyMemberJoinStatus")]
-        public required FamilyGroupMemberJoinStatus FamilyGroupMemberJoinStatus {get;set;}
+        public required FamilyGroupMemberJoin FamilyGroupMemberJoinStatus { get; set; }
     }
 }

@@ -8,6 +8,6 @@ namespace FamilyVaultServer.Models.Requests
         [JsonPropertyName("token")]
         public required Guid Token { get; set; }
         [JsonPropertyName("info")]
-        public required FamilyGroupMemberJoinStatusInfo Info { get; set; }
+        public required FamilyGroupMemberJoinInfo Info { get; set; }
     }
 }

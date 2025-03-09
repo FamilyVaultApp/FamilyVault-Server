@@ -4,11 +4,11 @@ namespace FamilyVaultServer.Services.MemberJoinToken
 {
     public class FamilyGroupMemberJoinService : IFamilyGroupMemberJoinService
     {
-        private List<FamilyGroupMemberJoinStatus> statuses = [];
+        private List<FamilyGroupMemberJoin> statuses = [];
 
-        public FamilyGroupMemberJoinStatus GenerateNew()
+        public FamilyGroupMemberJoin GenerateNew()
         {
-            var memberJoinStatus = FamilyGroupMemberJoinStatus.New();
+            var memberJoinStatus = FamilyGroupMemberJoin.New();
             statuses.Add(memberJoinStatus);
             return memberJoinStatus;
         }
@@ -16,11 +16,11 @@ namespace FamilyVaultServer.Services.MemberJoinToken
         {
             statuses.RemoveAll(js => js.Token == token);
         }
-        public FamilyGroupMemberJoinStatus? GetStatusByToken(Guid token)
+        public FamilyGroupMemberJoin? GetStatusByToken(Guid token)
         {
             return statuses.Find(js => js.Token == token);
         }
-        public FamilyGroupMemberJoinStatus? UpdateInfo(Guid token, FamilyGroupMemberJoinStatusInfo info)
+        public FamilyGroupMemberJoin? UpdateInfo(Guid token, FamilyGroupMemberJoinInfo info)
         {
             var joinStatus = GetStatusByToken(token);
 
@@ -31,7 +31,7 @@ namespace FamilyVaultServer.Services.MemberJoinToken
 
             return joinStatus;
         }
-        public FamilyGroupMemberJoinStatus? UpdateStatus(Guid token, FamilyGroupMemberJoinStatusEnum status)
+        public FamilyGroupMemberJoin? UpdateStatus(Guid token, FamilyGroupMemberJoinStatusEnum status)
         {
             var joinStatus = GetStatusByToken(token);
 

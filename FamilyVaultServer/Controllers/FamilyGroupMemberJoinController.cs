@@ -7,45 +7,45 @@ namespace FamilyVaultServer.Controllers
 {
     [Route("FamilyGroupMemberJoinStatus/[action]")]
     [ApiController]
-    public class FamilyGroupMemberJoinStatusController : Controller
+    public class FamilyGroupMemberJoinController : ControllerBase
     {
         private IFamilyGroupMemberJoinService _familyGroupMemberJoinService { get; set; }
-        public FamilyGroupMemberJoinStatusController(IFamilyGroupMemberJoinService familyGroupmemberJoinService)
+        public FamilyGroupMemberJoinController(IFamilyGroupMemberJoinService familyGroupmemberJoinService)
         {
             _familyGroupMemberJoinService = familyGroupmemberJoinService;
         }
 
         [HttpGet]
-        public ActionResult<FamilyGroupMemberJoinStatusResponse> Generate()
+        public ActionResult<FamilyGroupMemberJoinResponse> Generate()
         {
-            return new FamilyGroupMemberJoinStatusResponse
+            return new FamilyGroupMemberJoinResponse
             {
                 FamilyGroupMemberJoinStatus = _familyGroupMemberJoinService.GenerateNew()
             };
         }
         [HttpDelete]
-        public ActionResult Delete(FamilyGroupMemberTokenRequest req)
+        public ActionResult Delete(FamilyGroupMemberJoinTokenRequest req)
         {
             _familyGroupMemberJoinService.Delete(req.Token);
 
             return Ok();
         }
         [HttpGet]
-        public ActionResult<FamilyGroupMemberJoinStatusResponse> GetByToken([FromQuery] FamilyGroupMemberTokenRequest req)
+        public ActionResult<FamilyGroupMemberJoinResponse> GetByToken([FromQuery] FamilyGroupMemberJoinTokenRequest req)
         {
             var statusToken = _familyGroupMemberJoinService.GetStatusByToken(req.Token);
 
-            if (statusToken is null)
+            if (statusToken == null)
             {
                 return NotFound();
             }
             else
             {
-                return Ok(new FamilyGroupMemberJoinStatusResponse { FamilyGroupMemberJoinStatus = statusToken });
+                return Ok(new FamilyGroupMemberJoinResponse { FamilyGroupMemberJoinStatus = statusToken });
             }
         }
         [HttpPost]
-        public ActionResult<FamilyGroupMemberJoinStatusResponse> UpdateStatus(FamilyGroupMemberJoinStatusUpdateRequest req)
+        public ActionResult<FamilyGroupMemberJoinResponse> UpdateStatus(FamilyGroupMemberJoinStatusUpdateRequest req)
         {
             var statusToken = _familyGroupMemberJoinService.UpdateStatus(req.Token, req.Status);
 
@@ -55,11 +55,11 @@ namespace FamilyVaultServer.Controllers
             }
             else
             {
-                return Ok(new FamilyGroupMemberJoinStatusResponse { FamilyGroupMemberJoinStatus = statusToken });
+                return Ok(new FamilyGroupMemberJoinResponse { FamilyGroupMemberJoinStatus = statusToken });
             }
         }
         [HttpPost]
-        public ActionResult<FamilyGroupMemberJoinStatusResponse> UpdateInfo(FamilyGroupMemberJoinUpdateInfoRequest req)
+        public ActionResult<FamilyGroupMemberJoinResponse> UpdateInfo(FamilyGroupMemberJoinUpdateInfoRequest req)
         {
             var statusToken = _familyGroupMemberJoinService.UpdateInfo(req.Token, req.Info);
 
@@ -69,7 +69,7 @@ namespace FamilyVaultServer.Controllers
             }
             else
             {
-                return Ok(new FamilyGroupMemberJoinStatusResponse { FamilyGroupMemberJoinStatus = statusToken });
+                return Ok(new FamilyGroupMemberJoinResponse { FamilyGroupMemberJoinStatus = statusToken });
             }
         }
     }

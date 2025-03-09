@@ -2,7 +2,7 @@
 
 namespace FamilyVaultServer.Models.Requests
 {
-    public class FamilyGroupMemberTokenRequest
+    public class FamilyGroupMemberJoinTokenRequest
     {
         [JsonPropertyName("token")]
         public required Guid Token { get; set; }

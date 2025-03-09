@@ -2,7 +2,7 @@
 
 namespace FamilyVaultServer.Services.MemberJoinToken.Models
 {
-    public class FamilyGroupMemberJoinStatusInfo
+    public class FamilyGroupMemberJoinInfo
     {
         [JsonPropertyName("contextId")]
         public required string ContextId  { get; set; }
