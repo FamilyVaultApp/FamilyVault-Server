@@ -77,5 +77,23 @@ namespace FamilyVaultServer.Controllers
                 return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<ListMembersFromFamilyGroupResponse>> ListMembersFromFamilyGroup(ListMembersFromFamilyGroupRequest request)
+        {
+            try
+            {
+                var responseJson = await _privMx.PrivMxListUsersFromContext(request.ContextId, 0, 100, "desc");
+
+                return Ok(new ListMembersFromFamilyGroupResponse
+                {
+                    Members = responseJson.Users.Select(FamilyGroupMember.FromPrivMxContextUser).ToList(),
+                });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
     }
 }

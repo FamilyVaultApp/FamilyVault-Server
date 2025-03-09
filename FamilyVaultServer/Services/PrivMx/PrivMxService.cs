@@ -47,5 +47,14 @@ namespace FamilyVaultServer.Services.PrivMx
                 UserPubKey = userPubKey,
                 Acl = acl,
             });
+
+        public Task<PrivMxListUsersFromContextResult> PrivMxListUsersFromContext(string contextId, int skip, int limit, string sortOrder)
+            => _client.ExecuteMethodWithResponse<PrivMxListUsersFromContextParemeters, PrivMxListUsersFromContextResult>("context/listUsersFromContext", new PrivMxListUsersFromContextParemeters
+            {
+                ContextId = contextId,
+                Skip = skip,
+                Limit = limit,
+                SortOrder = sortOrder,
+            });
     }
 }
