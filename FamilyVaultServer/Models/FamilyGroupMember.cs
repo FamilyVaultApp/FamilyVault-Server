@@ -12,7 +12,7 @@ namespace FamilyVaultServer.Models.Responses
         [JsonPropertyName("publicKey")]
         public required string PublicKey { get; set; }
         [JsonPropertyName("permissionGroup")]
-        public required FamilyGroupMemberPermission PermissionGroup { get; set; }
+        public required FamilyGroupMemberPermissionGroup PermissionGroup { get; set; }
         public static FamilyGroupMember FromPrivMxContextUser(PrivMxContextUser user)
         {
             var userIdSplitted = user.UserId.Split(" ");
@@ -22,7 +22,7 @@ namespace FamilyVaultServer.Models.Responses
                 Surname = userIdSplitted.Last(),
                 PublicKey = user.PubKey,
                 // TODO: Ustawienie odpowiedniego PermissionGroup
-                PermissionGroup = FamilyGroupMemberPermission.Member
+                PermissionGroup = FamilyGroupMemberPermissionGroup.Member
             };
         }
     }
