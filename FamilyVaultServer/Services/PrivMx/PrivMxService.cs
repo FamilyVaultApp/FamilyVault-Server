@@ -63,5 +63,13 @@ namespace FamilyVaultServer.Services.PrivMx
             ContextId = contextId,
             Name = name
         });
+
+        public Task<bool> SetUserAcl(string contextId, string userId, string acl)
+        => _client.ExecuteMethodWithOperationStatus("context/setUserAcl", new PrivMxSetUserAclParameters
+        {
+            ContextId = contextId,
+            UserId = userId,
+            Acl = acl
+        });
     }
 }

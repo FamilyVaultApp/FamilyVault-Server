@@ -110,5 +110,21 @@ namespace FamilyVaultServer.Controllers
                 return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<SetUserAclResponse>> SetUserAcl(SetUserAclRequest request)
+        {
+            // TODO: Gdy będą już zdefiniowane ACL dać enum na 3 z nich
+            try
+            {
+                var response = await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
     }
 }

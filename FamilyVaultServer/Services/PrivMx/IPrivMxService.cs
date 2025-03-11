@@ -10,5 +10,6 @@ namespace FamilyVaultServer.Services.PrivMx
         Task<bool> AddUserToContext(string contextId, string userId, string userPubKey, string acl);
         Task<PrivMxListUsersFromContextResult> PrivMxListUsersFromContext(string contextId, int skip, int limit, string sortOrder);
         Task<bool> UpdateContext(string contextId, string name);
+        Task<bool> SetUserAcl(string contextId, string userId, string acl);
     }
 }
