@@ -95,5 +95,20 @@ namespace FamilyVaultServer.Controllers
                 return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<RenameFamilyGroupResponse>> RenameFamilyGroup(RenameFamilyGroupRequest request)
+        {
+            try
+            {
+                var response = await _privMx.UpdateContext(request.ContextId, request.Name);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
     }
 }
