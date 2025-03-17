@@ -3,11 +3,11 @@ using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Models.Requests
 {
-    public class FamilyGroupMemberJoinUpdateInfoRequest
+    public class JoinUpdateInfoRequest
     {
         [JsonPropertyName("token")]
         public required Guid Token { get; set; }
         [JsonPropertyName("info")]
-        public required FamilyGroupMemberJoinInfo Info { get; set; }
+        public required JoinStatusInfo Info { get; set; }
     }
 }
