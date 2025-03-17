@@ -25,7 +25,7 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpDelete]
-        public ActionResult Delete(JoinTokenRequest req)
+        public ActionResult Delete(JoinStatusTokenRequest req)
         {
             _joinStatusService.Delete(req.Token);
 
@@ -33,7 +33,7 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpGet]
-        public ActionResult<JoinStatusResponse> GetByToken([FromQuery] JoinTokenRequest req)
+        public ActionResult<JoinStatusResponse> GetByToken([FromQuery] JoinStatusTokenRequest req)
         {
             var statusToken = _joinStatusService.GetStatusByToken(req.Token);
 
