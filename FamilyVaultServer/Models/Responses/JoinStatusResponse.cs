@@ -6,6 +6,6 @@ namespace FamilyVaultServer.Models.Responses
     public class JoinStatusResponse
     {
         [JsonPropertyName("joinStatus")]
-        public required JoinStatus JoinStatus { get; set; }
+        public required JoinStatus Status { get; set; }
     }
 }

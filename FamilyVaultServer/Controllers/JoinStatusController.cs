@@ -20,7 +20,7 @@ namespace FamilyVaultServer.Controllers
         {
             return new JoinStatusResponse
             {
-                JoinStatus = _joinStatusService.GenerateNew()
+                Status = _joinStatusService.GenerateNew()
             };
         }
 
@@ -43,7 +43,7 @@ namespace FamilyVaultServer.Controllers
             }
             else
             {
-                return Ok(new JoinStatusResponse { JoinStatus = statusToken });
+                return Ok(new JoinStatusResponse { Status = statusToken });
             }
         }
 
@@ -63,7 +63,7 @@ namespace FamilyVaultServer.Controllers
                 _joinStatusService.UpdateInfo(req.Token, req.Info);
             }
 
-            return Ok(new JoinStatusResponse { JoinStatus = statusToken });
+            return Ok(new JoinStatusResponse { Status = statusToken });
         }
     }
 }

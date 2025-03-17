@@ -3,11 +3,11 @@
     public class JoinStatus
     {
         public required Guid Token { get; set; }
-        public required JoinStatusState State { get; set; } = JoinStatusState.Initiated;
+        public required JoinStatusState State { get; set; }
         public JoinStatusInfo? Info { get; set; } = null;
         public static JoinStatus New()
         {
-            return new JoinStatus { Token = Guid.NewGuid(), State = JoinStatusState.Pending };
+            return new JoinStatus { Token = Guid.NewGuid(), State = JoinStatusState.Initiated };
         }
     }
 }
