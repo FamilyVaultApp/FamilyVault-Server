@@ -84,7 +84,7 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var response = await _privMx.UpdateContext(request.ContextId, request.Name);
+                var response = await _privMx.UpdateContext(request.ContextId, request.Name, null, null, null);
 
                 return Ok();
             }

@@ -8,6 +8,12 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
         [JsonPropertyName("contextId")]
         public required string ContextId { get; set; }
         [JsonPropertyName("name")]
-        public required string Name { get; set; }
+        public string ?Name { get; set; }
+        [JsonPropertyName("description")]
+        public string? Description { get; set; }
+        [JsonPropertyName("scope")]
+        public string? Scope { get; set; }
+        [JsonPropertyName("policy")]
+        public string? Policy { get; set; }
     }
 }
