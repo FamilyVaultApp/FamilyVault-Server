@@ -1,7 +1,10 @@
-﻿using FamilyVaultServer.Models.Requests;
+﻿using FamilyVaultServer.Models;
+using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Xml.Linq;
 
 namespace FamilyVaultServer.Controllers
 {
@@ -31,44 +34,24 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuardianToFamilyGroup(AddMemberToFamilyGroupRequest request)
-        {
-            // TODO Określić ACLe format:
-            // w stringu = ALLOW store/READ\nALLOW thread/ALL
-
-            try
-            {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new ResponseError { Message = e.Message });
-            }
-        }
-
-        [HttpPost]
         public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddMemberToFamilyGroup(AddMemberToFamilyGroupRequest request)
         {
             try
             {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new ResponseError { Message = e.Message });
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuestToFamilyGroup(AddMemberToFamilyGroupRequest request)
-        {
-            try
-            {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+                switch (request.Role)
+                {
+                    case FamilyGroupMemberPermissionGroup.Guardian:
+                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+                        break;
+                    case FamilyGroupMemberPermissionGroup.Member:
+                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+                        break;
+                    case FamilyGroupMemberPermissionGroup.Guest:
+                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown family role.");
+                }
 
                 return Ok();
             }
@@ -112,12 +95,24 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SetUserAclResponse>> SetUserAcl(SetUserAclRequest request)
+        public async Task<ActionResult<ChangeUserPermmissionGroupResponse>> ChangeUserPermmissionGroup(ChangeUserPermmissionGroupRequest request)
         {
-            // TODO: Gdy będą już zdefiniowane ACL dać enum na 3 z nich
             try
             {
-                var response = await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
+                switch (request.Role)
+                {
+                    case FamilyGroupMemberPermissionGroup.Guardian:
+                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
+                        break;
+                    case FamilyGroupMemberPermissionGroup.Member:
+                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
+                        break;
+                    case FamilyGroupMemberPermissionGroup.Guest:
+                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown family role.");
+                }
 
                 return Ok();
             }

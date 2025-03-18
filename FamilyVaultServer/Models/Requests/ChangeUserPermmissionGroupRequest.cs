@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Models.Requests
 {
-    public class SetUserAclRequest
+    public class ChangeUserPermmissionGroupRequest
     {
         [Required]
         [JsonPropertyName("contextId")]
@@ -12,5 +12,9 @@ namespace FamilyVaultServer.Models.Requests
         [Required]
         [JsonPropertyName("userId")]
         public required string UserId { get; set; }
+
+        [Required]
+        [JsonPropertyName("role")]
+        public required FamilyGroupMemberPermissionGroup Role { get; set; }
     }
 }
