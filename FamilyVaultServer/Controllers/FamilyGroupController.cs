@@ -1,7 +1,10 @@
-﻿using FamilyVaultServer.Models.Requests;
+﻿using FamilyVaultServer.Models;
+using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
+using FamilyVaultServer.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace FamilyVaultServer.Controllers
 {
@@ -31,44 +34,12 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuardianToFamilyGroup(AddMemberToFamilyGroupRequest request)
-        {
-            // TODO Określić ACLe format:
-            // w stringu = ALLOW store/READ\nALLOW thread/ALL
-
-            try
-            {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new ResponseError { Message = e.Message });
-            }
-        }
-
-        [HttpPost]
         public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddMemberToFamilyGroup(AddMemberToFamilyGroupRequest request)
         {
             try
             {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, new ResponseError { Message = e.Message });
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<AddMemberToFamilyGroupResponse>> AddGuestToFamilyGroup(AddMemberToFamilyGroupRequest request)
-        {
-            try
-            {
-                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
+                var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
+                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, aclPermissions);
 
                 return Ok();
             }
@@ -89,6 +60,37 @@ namespace FamilyVaultServer.Controllers
                 {
                     Members = responseJson.Users.Select(FamilyGroupMember.FromPrivMxContextUser).ToList(),
                 });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<RenameFamilyGroupResponse>> Rename(RenameFamilyGroupRequest request)
+        {
+            try
+            {
+                var response = await _privMx.UpdateContext(request.ContextId, request.Name, null, null, null);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ChangeMemberPermissionGroupResponse>> ChangeMemberPermmissionGroup(ChangeMemberPermissionGroupRequest request)
+        {
+            try
+            {
+                var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
+                await _privMx.SetUserAcl(request.ContextId, request.UserId, aclPermissions);
+
+                return Ok();
             }
             catch (Exception e)
             {

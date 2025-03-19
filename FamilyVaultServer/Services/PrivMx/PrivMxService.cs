@@ -56,5 +56,23 @@ namespace FamilyVaultServer.Services.PrivMx
                 Limit = limit,
                 SortOrder = sortOrder,
             });
+
+        public Task<bool> UpdateContext(string contextId, string? name, string? description, string? scope, string? policy)
+            => _client.ExecuteMethodWithOperationStatus("context/updateContext", new PrivMxUpdateContextParameters
+            {
+                ContextId = contextId,
+                Name = name,
+                Description = description,
+                Scope = scope,
+                Policy = policy
+            });
+
+        public Task<bool> SetUserAcl(string contextId, string userId, string acl)
+            => _client.ExecuteMethodWithOperationStatus("context/setUserAcl", new PrivMxSetUserAclParameters
+            {
+                ContextId = contextId,
+                UserId = userId,
+                Acl = acl
+            });
     }
 }
