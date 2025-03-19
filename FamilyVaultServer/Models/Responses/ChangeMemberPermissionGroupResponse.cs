@@ -1,6 +1,6 @@
 ﻿namespace FamilyVaultServer.Models.Responses
 {
-    public class ChangeUserPermmissionGroupResponse
+    public class ChangeMemberPermissionGroupResponse
     {
     }
 }

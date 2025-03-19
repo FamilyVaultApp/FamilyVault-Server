@@ -16,6 +16,6 @@ namespace FamilyVaultServer.Models.Requests
         public required string UserPubKey { get; set; }
         [Required]
         [JsonPropertyName("role")]
-        public required FamilyGroupMemberPermissionGroup Role { get; set; }
+        public required PermissionGroup Role { get; set; }
     }
 }

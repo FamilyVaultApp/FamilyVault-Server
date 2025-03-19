@@ -2,9 +2,9 @@
 using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
+using FamilyVaultServer.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Xml.Linq;
 
 namespace FamilyVaultServer.Controllers
 {
@@ -38,20 +38,8 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                switch (request.Role)
-                {
-                    case FamilyGroupMemberPermissionGroup.Guardian:
-                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-                        break;
-                    case FamilyGroupMemberPermissionGroup.Member:
-                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-                        break;
-                    case FamilyGroupMemberPermissionGroup.Guest:
-                        await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, "DENY ALL");
-                        break;
-                    default:
-                        throw new ArgumentException("Unknown family role.");
-                }
+                var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
+                await _privMx.AddUserToContext(request.ContextId, request.UserId, request.UserPubKey, aclPermissions);
 
                 return Ok();
             }
@@ -80,7 +68,7 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<RenameFamilyGroupResponse>> RenameFamilyGroup(RenameFamilyGroupRequest request)
+        public async Task<ActionResult<RenameFamilyGroupResponse>> Rename(RenameFamilyGroupRequest request)
         {
             try
             {
@@ -95,24 +83,12 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ChangeUserPermmissionGroupResponse>> ChangeUserPermmissionGroup(ChangeUserPermmissionGroupRequest request)
+        public async Task<ActionResult<ChangeMemberPermissionGroupResponse>> ChangeMemberPermmissionGroup(ChangeMemberPermissionGroupRequest request)
         {
             try
             {
-                switch (request.Role)
-                {
-                    case FamilyGroupMemberPermissionGroup.Guardian:
-                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
-                        break;
-                    case FamilyGroupMemberPermissionGroup.Member:
-                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
-                        break;
-                    case FamilyGroupMemberPermissionGroup.Guest:
-                        await _privMx.SetUserAcl(request.ContextId, request.UserId, "ALLOW ALL");
-                        break;
-                    default:
-                        throw new ArgumentException("Unknown family role.");
-                }
+                var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
+                await _privMx.SetUserAcl(request.ContextId, request.UserId, aclPermissions);
 
                 return Ok();
             }

@@ -1,6 +1,6 @@
 ﻿namespace FamilyVaultServer.Models
 {
-    public enum FamilyGroupMemberPermissionGroup
+    public enum PermissionGroup
     {
         Guardian = 0,
         Member = 1,
