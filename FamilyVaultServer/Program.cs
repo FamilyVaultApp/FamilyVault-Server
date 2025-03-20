@@ -18,7 +18,7 @@ namespace FamilyVaultServer
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<PrivMxOptions>(builder.Configuration.GetSection(PrivMxOptions.PrivMx));
             builder.Services.AddSingleton<IPrivMxService, PrivMxService>();
-            builder.Services.AddSingleton<IFamilyGroupMemberJoinService, FamilyGroupMemberJoinService>();
+            builder.Services.AddSingleton<IJoinStatusService, JoinStatusService>();
 
             var app = builder.Build();
 
