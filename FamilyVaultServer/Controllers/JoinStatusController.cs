@@ -25,11 +25,11 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public ActionResult Delete(JoinStatusTokenRequest req)
+        public ActionResult<DeleteJoinStatusResponse> Delete(JoinStatusTokenRequest req)
         {
             _joinStatusService.Delete(req.Token);
 
-            return Ok();
+            return Ok(new DeleteJoinStatusResponse());
         }
 
         [HttpGet]
