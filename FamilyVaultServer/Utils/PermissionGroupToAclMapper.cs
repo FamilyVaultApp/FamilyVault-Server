@@ -9,8 +9,8 @@ namespace FamilyVaultServer.Utils
             return permissionGroup switch
             {
                 PermissionGroup.Guardian => "ALLOW ALL",
-                PermissionGroup.Member => "ALLOW ALL",
-                PermissionGroup.Guest => "ALLOW ALL",
+                PermissionGroup.Member => "DENY ALL",
+                PermissionGroup.Guest => "DENY ALL",
                 _ => throw new ArgumentException("Provided not valid PermissionGroup"),
             };
         }
