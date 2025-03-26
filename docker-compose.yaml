@@ -37,6 +37,8 @@ services:
     image: "familyvault/server"
     ports:
       - "10.7.5.1:8080:8080"
+    volumes:
+      - "/home/pzesp/volumes/familyvault/config:/familyvault/config"
     depends_on:
       - mongodb
       - privmx-bridge

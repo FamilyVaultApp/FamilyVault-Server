@@ -34,6 +34,6 @@
             File.WriteAllText(SolutionIdFilePath, solutionId);
         }
 
-        private string SolutionIdFilePath => Path.Combine(AppContext.BaseDirectory, "solution");
+        private string SolutionIdFilePath => Path.Combine(AppContext.BaseDirectory, "config/solution");
     }
 }
