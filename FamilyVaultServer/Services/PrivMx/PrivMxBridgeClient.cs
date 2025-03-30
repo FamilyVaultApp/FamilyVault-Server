@@ -3,6 +3,7 @@ using FamilyVaultServer.Services.PrivMx.Models.Params;
 using FamilyVaultServer.Services.PrivMx.Models.Result;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Services.PrivMx
 {
@@ -53,11 +54,15 @@ namespace FamilyVaultServer.Services.PrivMx
             return response.Result;
         }
 
-
         private async Task<Stream> SendRequestAndGetResponseStream<TRequestParameters>(PrivMxRequest<TRequestParameters> request)
             where TRequestParameters : PrivMxRequestParameters
         {
-            var response = await _httpClient.PostAsJsonAsync("api", request);
+            var jsonSerializerOptions = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("api", request, jsonSerializerOptions);
 
             if (!response.IsSuccessStatusCode)
             {
