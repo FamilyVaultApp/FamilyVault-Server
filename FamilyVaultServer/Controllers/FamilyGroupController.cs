@@ -1,5 +1,4 @@
-﻿using FamilyVaultServer.Models;
-using FamilyVaultServer.Models.Requests;
+﻿using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
 using FamilyVaultServer.Utils;
@@ -72,7 +71,7 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var response = await _privMx.UpdateContext(request.ContextId, request.Name, null, null, null);
+                var response = await _privMx.UpdateContext(request.ContextId, request.Name);
 
                 return Ok();
             }
