@@ -14,6 +14,6 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
         [JsonPropertyName("scope")]
         public string? Scope { get; set; }
         [JsonPropertyName("policy")]
-        public string? Policy { get; set; }
+        public object? Policy { get; set; }
     }
 }

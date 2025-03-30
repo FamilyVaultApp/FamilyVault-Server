@@ -73,7 +73,7 @@ namespace FamilyVaultServer.Controllers
             {
                 var response = await _privMx.UpdateContext(request.ContextId, request.Name);
 
-                return Ok();
+                return Ok(new RenameFamilyGroupResponse { });
             }
             catch (Exception e)
             {
