@@ -73,7 +73,7 @@ namespace FamilyVaultServer.Controllers
             {
                 var response = await _privMx.UpdateContext(request.ContextId, request.Name);
 
-                return Ok();
+                return Ok(new RenameFamilyGroupResponse { });
             }
             catch (Exception e)
             {
@@ -89,7 +89,7 @@ namespace FamilyVaultServer.Controllers
                 var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
                 await _privMx.SetUserAcl(request.ContextId, request.UserId, aclPermissions);
 
-                return Ok();
+                return Ok(new ChangeMemberPermissionGroupResponse { });
             }
             catch (Exception e)
             {
