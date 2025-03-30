@@ -89,7 +89,7 @@ namespace FamilyVaultServer.Controllers
                 var aclPermissions = PermissionGroupToAclMapper.Map(request.Role);
                 await _privMx.SetUserAcl(request.ContextId, request.UserId, aclPermissions);
 
-                return Ok();
+                return Ok(new ChangeMemberPermissionGroupResponse { });
             }
             catch (Exception e)
             {
