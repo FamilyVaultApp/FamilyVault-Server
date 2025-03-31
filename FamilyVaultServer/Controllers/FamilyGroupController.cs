@@ -96,5 +96,20 @@ namespace FamilyVaultServer.Controllers
                 return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<RemoveMemberFromFamilyGroupResponse>> RemoveMemberFromFamilyGroup(RemoveMemberFromFamilyGroupRequest request)
+        {
+            try
+            {
+                await _privMx.RemoveUserFromContextByPubKey(request.ContextId, request.UserPubKey);
+
+                return Ok(new RemoveMemberFromFamilyGroupResponse { });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
     }
 }
