@@ -74,5 +74,12 @@ namespace FamilyVaultServer.Services.PrivMx
                 UserId = userId,
                 Acl = acl
             });
-    }
+
+        public Task<bool> RemoveUserFromContextByPubKey(string contextId, string userPubKey)
+            => _client.ExecuteMethodWithOperationStatus("context/removeUserFromContextByPubKey", new PrivMxRemoveUserFromContextByPubKeyParameters
+            {
+                ContextId = contextId,
+                UserPubKey = userPubKey
+            });
+     }
 }
