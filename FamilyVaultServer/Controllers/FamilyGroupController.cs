@@ -1,9 +1,11 @@
 ﻿using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
+using FamilyVaultServer.Services.PrivMx.Models.Result;
 using FamilyVaultServer.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Text.Json;
 
 namespace FamilyVaultServer.Controllers
 {
@@ -105,6 +107,31 @@ namespace FamilyVaultServer.Controllers
                 await _privMx.RemoveUserFromContextByPubKey(request.ContextId, request.UserPubKey);
 
                 return Ok(new RemoveMemberFromFamilyGroupResponse { });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<GetFamilyGroupInformationResponse>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
+        {
+            try
+            {
+                var responseJson = await _privMx.GetContext(request.ContextId);
+
+                return Ok(new GetFamilyGroupInformationResponse { 
+                    Id = responseJson.Id,
+                    Created = responseJson.Created,
+                    Modified = responseJson.Modified,
+                    Solution = responseJson.Solution,
+                    Shares = responseJson.Shares,
+                    Name = responseJson.Name,
+                    Description = responseJson.Description,
+                    Scope = responseJson.Scope,
+                    Policy = responseJson.Policy
+                });
             }
             catch (Exception e)
             {
