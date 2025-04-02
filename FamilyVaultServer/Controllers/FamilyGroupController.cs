@@ -115,22 +115,23 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetFamilyGroupInformationResponse>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
+        public async Task<ActionResult<GetFamilyGroupInformation_ContextInfo>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
         {
             try
             {
                 var responseJson = await _privMx.GetContext(request.ContextId);
 
-                return Ok(new GetFamilyGroupInformationResponse { 
-                    Id = responseJson.Id,
-                    Created = responseJson.Created,
-                    Modified = responseJson.Modified,
-                    Solution = responseJson.Solution,
-                    Shares = responseJson.Shares,
-                    Name = responseJson.Name,
-                    Description = responseJson.Description,
-                    Scope = responseJson.Scope,
-                    Policy = responseJson.Policy
+                return Ok(new GetFamilyGroupInformation_ContextInfo
+                {
+                    Id = responseJson.ContextInfo.Id,
+                    Created = responseJson.ContextInfo.Created,
+                    Modified = responseJson.ContextInfo.Modified,
+                    Solution = responseJson.ContextInfo.Solution,
+                    Shares = responseJson.ContextInfo.Shares,
+                    Name = responseJson.ContextInfo.Name,
+                    Description = responseJson.ContextInfo.Description,
+                    Scope = responseJson.ContextInfo.Scope,
+                    Policy = responseJson.ContextInfo.Policy
                 });
             }
             catch (Exception e)

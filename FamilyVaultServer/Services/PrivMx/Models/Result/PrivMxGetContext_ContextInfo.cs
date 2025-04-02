@@ -2,7 +2,7 @@
 
 namespace FamilyVaultServer.Services.PrivMx.Models.Result
 {
-    public class PrivMxGetContextResult : PrivMxResponseResult
+    public class PrivMxGetContext_ContextInfo : PrivMxResponseResult
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
