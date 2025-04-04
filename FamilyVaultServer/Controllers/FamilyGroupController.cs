@@ -1,11 +1,9 @@
 ﻿using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
-using FamilyVaultServer.Services.PrivMx.Models.Result;
 using FamilyVaultServer.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-using System.Text.Json;
 
 namespace FamilyVaultServer.Controllers
 {
@@ -115,13 +113,13 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetFamilyGroupInformation_ContextInfo>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
+        public async Task<ActionResult<GetFamilyGroupInformationResponse>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
         {
             try
             {
                 var responseJson = await _privMx.GetContext(request.ContextId);
 
-                return Ok(new GetFamilyGroupInformation_ContextInfo
+                return Ok(new GetFamilyGroupInformationResponse
                 {
                     Id = responseJson.ContextInfo.Id,
                     Created = responseJson.ContextInfo.Created,

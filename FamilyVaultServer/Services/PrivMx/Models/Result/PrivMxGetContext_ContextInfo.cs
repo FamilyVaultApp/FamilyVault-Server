@@ -5,22 +5,22 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Result
     public class PrivMxGetContext_ContextInfo : PrivMxResponseResult
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public required String Id { get; set; }
         [JsonPropertyName("created")]
-        public long Created { get; set; }
+        public required Int64 Created { get; set; }
         [JsonPropertyName("modified")]
-        public long Modified { get; set; }
+        public required Int64 Modified { get; set; }
         [JsonPropertyName("solution")]
-        public string Solution { get; set; }
+        public required String Solution { get; set; }
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public required String Name { get; set; }
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public required String Description { get; set; }
         [JsonPropertyName("scope")]
-        public string Scope { get; set; }
+        public required String Scope { get; set; }
         [JsonPropertyName("shares")]
-        public List<string> Shares { get; set; }
+        public required List<String> Shares { get; set; }
         [JsonPropertyName("policy")]
-        public object Policy { get; set; }
+        public required object Policy { get; set; }
     }
 }
