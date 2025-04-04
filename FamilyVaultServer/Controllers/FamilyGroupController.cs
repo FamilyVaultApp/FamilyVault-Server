@@ -111,5 +111,31 @@ namespace FamilyVaultServer.Controllers
                 return StatusCode(500, new ResponseError { Message = e.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult<GetFamilyGroupInformationResponse>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
+        {
+            try
+            {
+                var responseJson = await _privMx.GetContext(request.ContextId);
+
+                return Ok(new GetFamilyGroupInformationResponse
+                {
+                    Id = responseJson.ContextInfo.Id,
+                    Created = responseJson.ContextInfo.Created,
+                    Modified = responseJson.ContextInfo.Modified,
+                    Solution = responseJson.ContextInfo.Solution,
+                    Shares = responseJson.ContextInfo.Shares,
+                    Name = responseJson.ContextInfo.Name,
+                    Description = responseJson.ContextInfo.Description,
+                    Scope = responseJson.ContextInfo.Scope,
+                    Policy = responseJson.ContextInfo.Policy
+                });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
     }
 }

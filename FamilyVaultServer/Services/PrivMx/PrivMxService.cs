@@ -81,5 +81,11 @@ namespace FamilyVaultServer.Services.PrivMx
                 ContextId = contextId,
                 UserPubKey = userPubKey
             });
-     }
+
+        public Task<PrivMxGetContextResult> GetContext(string contextId)
+            => _client.ExecuteMethodWithResponse<PrivMxGetContextParameters, PrivMxGetContextResult>("context/getContext", new PrivMxGetContextParameters
+            {
+                ContextId = contextId
+            });
+    }
 }
