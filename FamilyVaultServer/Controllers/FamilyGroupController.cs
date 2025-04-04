@@ -53,11 +53,11 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var responseJson = await _privMx.PrivMxListUsersFromContext(request.ContextId, 0, 100, "desc");
+                var listUsersFromContextResponse = await _privMx.PrivMxListUsersFromContext(request.ContextId, 0, 100, "desc");
 
                 return Ok(new ListMembersFromFamilyGroupResponse
                 {
-                    Members = responseJson.Users.Select(FamilyGroupMember.FromPrivMxContextUser).ToList(),
+                    Members = listUsersFromContextResponse.Users.Select(FamilyGroupMember.FromPrivMxContextUser).ToList(),
                 });
             }
             catch (Exception e)
@@ -117,19 +117,11 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var responseJson = await _privMx.GetContext(request.ContextId);
+                var getContextResponse = await _privMx.GetContext(request.ContextId);
 
                 return Ok(new GetFamilyGroupInformationResponse
                 {
-                    Id = responseJson.ContextInfo.Id,
-                    Created = responseJson.ContextInfo.Created,
-                    Modified = responseJson.ContextInfo.Modified,
-                    Solution = responseJson.ContextInfo.Solution,
-                    Shares = responseJson.ContextInfo.Shares,
-                    Name = responseJson.ContextInfo.Name,
-                    Description = responseJson.ContextInfo.Description,
-                    Scope = responseJson.ContextInfo.Scope,
-                    Policy = responseJson.ContextInfo.Policy
+                    Context = getContextResponse.Context
                 });
             }
             catch (Exception e)

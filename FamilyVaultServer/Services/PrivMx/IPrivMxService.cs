@@ -12,6 +12,6 @@ namespace FamilyVaultServer.Services.PrivMx
         Task<bool> UpdateContext(string contextId, string? name = null, string? description = null, string? scope = null, string? policy = null);
         Task<bool> SetUserAcl(string contextId, string userId, string acl);
         Task<bool> RemoveUserFromContextByPubKey(string contextId, string userPubKey);
-        Task<PrivMxGetContextResult> GetContext(string contextId);
+        Task<PrivMxGetContext> GetContext(string contextId);
     }
 }

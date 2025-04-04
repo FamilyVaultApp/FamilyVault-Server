@@ -5,14 +5,14 @@ namespace FamilyVaultServer.Services.PrivMx.Models
     public class PrivMxContextUser
     {
         [JsonPropertyName("userId")]
-        public required String UserId { get; set; }
+        public required string UserId { get; set; }
         [JsonPropertyName("pubKey")]
-        public required String PubKey { get; set; }
+        public required string PubKey { get; set; }
         [JsonPropertyName("created")]
-        public required Int64 Created { get; set; }
+        public required int Created { get; set; }
         [JsonPropertyName("contextId")]
-        public required String ContextId { get; set; }
+        public required string ContextId { get; set; }
         [JsonPropertyName("acl")]
-        public required String Acl { get; set; }
+        public required string Acl { get; set; }
     }
 }
