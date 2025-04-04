@@ -9,7 +9,7 @@ namespace FamilyVaultServer.Services.PrivMx.Models
         [JsonPropertyName("pubKey")]
         public required string PubKey { get; set; }
         [JsonPropertyName("created")]
-        public required int Created { get; set; }
+        public required ulong Created { get; set; }
         [JsonPropertyName("contextId")]
         public required string ContextId { get; set; }
         [JsonPropertyName("acl")]
