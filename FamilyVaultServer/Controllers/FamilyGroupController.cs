@@ -113,15 +113,15 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetFamilyGroupInformationResponse>> GetFamilyGroupInformation(GetFamilyGroupInformationRequest request)
+        public async Task<ActionResult<GetFamilyGroupNameResponse>> GetFamilyGroupName(GetFamilyGroupNameRequest request)
         {
             try
             {
                 var getContextResponse = await _privMx.GetContext(request.ContextId);
 
-                return Ok(new GetFamilyGroupInformationResponse
+                return Ok(new GetFamilyGroupNameResponse
                 {
-                    Context = getContextResponse.Context
+                    FamilyGroupName = getContextResponse.Context.Name
                 });
             }
             catch (Exception e)
