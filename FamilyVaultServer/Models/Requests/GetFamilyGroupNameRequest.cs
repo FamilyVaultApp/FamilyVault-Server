@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Models.Requests
 {
-    public class GetFamilyGroupInformationRequest
+    public class GetFamilyGroupNameRequest
     {
         [Required]
         [JsonPropertyName("contextId")]
