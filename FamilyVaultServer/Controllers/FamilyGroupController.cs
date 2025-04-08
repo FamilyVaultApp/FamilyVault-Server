@@ -82,7 +82,7 @@ namespace FamilyVaultServer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ChangeMemberPermissionGroupResponse>> ChangeMemberPermmissionGroup(ChangeMemberPermissionGroupRequest request)
+        public async Task<ActionResult<ChangeMemberPermissionGroupResponse>> ChangeMemberPermissionGroup(ChangeMemberPermissionGroupRequest request)
         {
             try
             {
