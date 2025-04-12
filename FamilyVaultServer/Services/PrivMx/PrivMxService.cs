@@ -48,13 +48,20 @@ namespace FamilyVaultServer.Services.PrivMx
                 Acl = acl,
             });
 
-        public Task<PrivMxListUsersFromContextResult> PrivMxListUsersFromContext(string contextId, int skip, int limit, string sortOrder)
+        public Task<PrivMxListUsersFromContextResult> ListUsersFromContext(string contextId, int skip, int limit, string sortOrder)
             => _client.ExecuteMethodWithResponse<PrivMxListUsersFromContextParemeters, PrivMxListUsersFromContextResult>("context/listUsersFromContext", new PrivMxListUsersFromContextParemeters
             {
                 ContextId = contextId,
                 Skip = skip,
                 Limit = limit,
                 SortOrder = sortOrder,
+            });
+
+        public Task<PrivMxGetUserFromContextResult> GetUserFromContext(string contextId, string userId)
+            => _client.ExecuteMethodWithResponse<PrivMxGetUserFromContextParameters, PrivMxGetUserFromContextResult>("context/getUserFromContext", new PrivMxGetUserFromContextParameters
+            {
+                ContextId = contextId,
+                UserId = userId
             });
 
         public Task<bool> UpdateContext(string contextId, string? name, string? description, string? scope, string? policy)
