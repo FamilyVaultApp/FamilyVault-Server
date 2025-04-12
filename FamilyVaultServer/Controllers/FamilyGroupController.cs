@@ -53,11 +53,29 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var listUsersFromContextResponse = await _privMx.PrivMxListUsersFromContext(request.ContextId, 0, 100, "desc");
+                var listUsersFromContextResponse = await _privMx.ListUsersFromContext(request.ContextId, 0, 100, "desc");
 
                 return Ok(new ListMembersFromFamilyGroupResponse
                 {
                     Members = listUsersFromContextResponse.Users.Select(FamilyGroupMember.FromPrivMxContextUser).ToList(),
+                });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new ResponseError { Message = e.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<GetMemberFromFamilyGroupResponse>> GetMemberFromFamilyGroup(GetMemberFromFamilyGroupRequest request)
+        {
+            try
+            {
+                var userFromContextResponse = await _privMx.GetUserFromContext(request.ContextId, request.UserId);
+
+                return Ok(new GetMemberFromFamilyGroupResponse
+                {
+                    Member = FamilyGroupMember.FromPrivMxContextUser(userFromContextResponse.User)
                 });
             }
             catch (Exception e)
