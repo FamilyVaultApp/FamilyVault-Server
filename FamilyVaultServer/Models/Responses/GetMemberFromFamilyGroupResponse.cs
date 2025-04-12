@@ -5,6 +5,6 @@ namespace FamilyVaultServer.Models.Responses
     public class GetMemberFromFamilyGroupResponse
     {
         [JsonPropertyName("member")]
-        public FamilyGroupMember Member { get; set; }
+        public required FamilyGroupMember Member { get; set; }
     }
 }
