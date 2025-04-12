@@ -1,6 +1,7 @@
 ﻿using FamilyVaultServer.Models.Requests;
 using FamilyVaultServer.Models.Responses;
 using FamilyVaultServer.Services.PrivMx;
+using FamilyVaultServer.Services.PrivMx.Models;
 using FamilyVaultServer.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
@@ -71,11 +72,26 @@ namespace FamilyVaultServer.Controllers
         {
             try
             {
-                var userFromContextResponse = await _privMx.GetUserFromContext(request.ContextId, request.UserId);
+                PrivMxContextUser? contextUser = null;
+
+                if (request.UserId is not null)
+                {
+                    contextUser = (await _privMx.GetUserFromContext(request.ContextId, request.UserId)).User;
+                }
+
+                if (request.PublicKey is not null)
+                {
+                    contextUser = (await _privMx.GetUserFromContextByPubKey(request.ContextId, request.PublicKey)).User;
+                }
+
+                if (contextUser is null)
+                {
+                    return NotFound("User not found with the specified public key or user ID");
+                }
 
                 return Ok(new GetMemberFromFamilyGroupResponse
                 {
-                    Member = FamilyGroupMember.FromPrivMxContextUser(userFromContextResponse.User)
+                    Member = FamilyGroupMember.FromPrivMxContextUser(contextUser)
                 });
             }
             catch (Exception e)
