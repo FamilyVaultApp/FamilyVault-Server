@@ -1,4 +1,5 @@
 using FamilyVaultServer.Models;
+using FamilyVaultServer.Services.PrivMx.Models;
 
 namespace FamilyVaultServer.Utils
 {
@@ -6,16 +7,25 @@ namespace FamilyVaultServer.Utils
     {
         public static PermissionGroup Map(string acl)
         {
-            return acl switch
+            if (HasAllRequiredAcls(acl, PermissionGroupAcls.guardianAcl))
             {
-                PermissionGroupAcls.guestAcl => PermissionGroup.Guest,
+                return PermissionGroup.Guardian;
+            }
 
-                PermissionGroupAcls.memberAcl => PermissionGroup.Member,
+            if (HasAllRequiredAcls(acl, PermissionGroupAcls.memberAcl))
+            {
+                return PermissionGroup.Member;
+            }
 
-                PermissionGroupAcls.guardianAcl => PermissionGroup.Guardian,
+            if (HasAllRequiredAcls(acl, PermissionGroupAcls.guestAcl))
+            {
+                return PermissionGroup.Guest;
+            }
 
-                _ => throw new ArgumentException("Provided not valid ACL"),
-            };
+            return PermissionGroup.Unknown;
         }
+
+        private static bool HasAllRequiredAcls(string acl, List<PrivMxAcl> acls) =>
+            acls.All((requiredAcl) => acl.Contains(requiredAcl.ToString()));
     }
 }

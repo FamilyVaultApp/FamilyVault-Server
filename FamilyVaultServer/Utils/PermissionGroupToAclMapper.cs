@@ -1,4 +1,5 @@
 ﻿using FamilyVaultServer.Models;
+using FamilyVaultServer.Services.PrivMx.Models;
 
 namespace FamilyVaultServer.Utils
 {
@@ -8,14 +9,17 @@ namespace FamilyVaultServer.Utils
         {
             return permissionGroup switch
             {
-                PermissionGroup.Guardian => PermissionGroupAcls.guardianAcl,
+                PermissionGroup.Guardian => AclListToString(PermissionGroupAcls.guardianAcl),
 
-                PermissionGroup.Member => PermissionGroupAcls.memberAcl,
+                PermissionGroup.Member => AclListToString(PermissionGroupAcls.memberAcl),
 
-                PermissionGroup.Guest => PermissionGroupAcls.guestAcl,
+                PermissionGroup.Guest => AclListToString(PermissionGroupAcls.guestAcl),
 
                 _ => throw new ArgumentException("Provided not valid PermissionGroup"),
             };
         }
+
+        private static string AclListToString(List<PrivMxAcl> acls) =>
+            string.Join("\n", acls.Select((acl) => acl.ToString()));
     }
 }

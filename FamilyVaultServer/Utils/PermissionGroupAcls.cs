@@ -1,31 +1,40 @@
-using FamilyVaultServer.Models;
+using FamilyVaultServer.Services.PrivMx.Models;
 
-public static class PermissionGroupAcls
+namespace FamilyVaultServer.Utils
 {
-    public const string guardianAcl = "ALLOW ALL";
-    public const string memberAcl =
-        "ALLOW thread/READ\n" +
-        "ALLOW thread/threadCreate\n" +
-        "ALLOW thread/threadUpdate\n" +
-        "ALLOW thread/threadMessageSend\n" +
-        "ALLOW thread/threadMessageDelete\n" +
-        "ALLOW thread/threadDelete\n" +
-        "ALLOW store/READ\n" +
-        "ALLOW store/storeCreate\n" +
-        "ALLOW store/storeFileCreate\n" +
-        "ALLOW store/storeFileWrite\n" +
-        "ALLOW store/storeFileDelete\n" +
-        "ALLOW inbox/READ\n" +
-        "ALLOW stream/READ";
-    public const string guestAcl =
-        "ALLOW thread/READ\n" +
-        "ALLOW thread/threadCreate\n" +
-        "ALLOW thread/threadMessageSend\n" +
-        "ALLOW thread/threadMessageDelete\n" +
-        "ALLOW store/READ\n" +
-        "ALLOW store/storeCreate\n" +
-        "ALLOW store/storeFileCreate\n" +
-        "ALLOW store/storeFileDelete\n" +
-        "ALLOW inbox/READ\n" +
-        "ALLOW stream/READ";
+    public static class PermissionGroupAcls
+    {
+        public static readonly List<PrivMxAcl> guardianAcl = [
+            new PrivMxAcl("ALLOW", "ALL")
+        ];
+
+        public static readonly List<PrivMxAcl> memberAcl = [
+            new PrivMxAcl("ALLOW", "thread", "READ"),
+            new PrivMxAcl("ALLOW", "thread", "threadCreate"),
+            new PrivMxAcl("ALLOW", "thread", "threadUpdate"),
+            new PrivMxAcl("ALLOW", "thread", "threadMessageSend"),
+            new PrivMxAcl("ALLOW", "thread", "threadMessageDelete"),
+            new PrivMxAcl("ALLOW", "thread", "threadDelete"),
+            new PrivMxAcl("ALLOW", "store", "READ"),
+            new PrivMxAcl("ALLOW", "store", "storeCreate"),
+            new PrivMxAcl("ALLOW", "store", "storeFileCreate"),
+            new PrivMxAcl("ALLOW", "store", "storeFileWrite"),
+            new PrivMxAcl("ALLOW", "store", "storeFileDelete"),
+            new PrivMxAcl("ALLOW", "inbox", "READ"),
+            new PrivMxAcl("ALLOW", "stream", "READ")
+        ];
+
+        public static readonly List<PrivMxAcl> guestAcl = [
+            new PrivMxAcl("ALLOW", "thread", "READ"),
+            new PrivMxAcl("ALLOW", "thread", "threadCreate"),
+            new PrivMxAcl("ALLOW", "thread", "threadMessageSend"),
+            new PrivMxAcl("ALLOW", "thread", "threadMessageDelete"),
+            new PrivMxAcl("ALLOW", "store", "READ"),
+            new PrivMxAcl("ALLOW", "store", "storeCreate"),
+            new PrivMxAcl("ALLOW", "store", "storeFileCreate"),
+            new PrivMxAcl("ALLOW", "store", "storeFileDelete"),
+            new PrivMxAcl("ALLOW", "inbox", "READ"),
+            new PrivMxAcl("ALLOW", "stream", "READ")
+        ];
+    }
 }
