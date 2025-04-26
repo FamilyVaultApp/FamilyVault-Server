@@ -1,4 +1,5 @@
 ﻿using FamilyVaultServer.Services.PrivMx.Models;
+using FamilyVaultServer.Utils;
 using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Models.Responses
@@ -21,8 +22,7 @@ namespace FamilyVaultServer.Models.Responses
                 Firstname = userIdSplitted.First(),
                 Surname = userIdSplitted.Last(),
                 PublicKey = user.PubKey,
-                // TODO: Ustawienie odpowiedniego PermissionGroup
-                PermissionGroup = PermissionGroup.Member
+                PermissionGroup = AclToPermissionGroupMapper.Map(user.Acl)
             };
         }
     }
