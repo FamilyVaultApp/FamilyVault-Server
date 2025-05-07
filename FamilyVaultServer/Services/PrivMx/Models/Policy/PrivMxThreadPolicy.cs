@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 
-namespace FamilyVaultServer.Models.PrivMxPolicy
+namespace FamilyVaultServer.Services.PrivMx.Models.Policy
 {
     public class PrivMxThreadPolicy
     {
         [JsonPropertyName("item")]
-        public PrivMxThreadItemPolicy item = new();
+        public required PrivMxThreadItemPolicy Item { get; set; }
     }
 }

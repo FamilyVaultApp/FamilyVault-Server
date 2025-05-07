@@ -1,11 +1,11 @@
 using System.Text.Json.Serialization;
 
-namespace FamilyVaultServer.Models.PrivMxPolicy
+namespace FamilyVaultServer.Services.PrivMx.Models.Policy
 {
     public class PrivMxThreadItemPolicy
     {
 
         [JsonPropertyName("update")]
-        public string Update = "all";
+        public required string Update { get; set; }
     }
 }
