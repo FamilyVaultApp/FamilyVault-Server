@@ -1,4 +1,5 @@
-﻿using FamilyVaultServer.Services.PrivMx.Models.Params;
+﻿using FamilyVaultServer.Models.PrivMxPolicy;
+using FamilyVaultServer.Services.PrivMx.Models.Params;
 using System.Text.Json.Serialization;
 
 namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
@@ -13,5 +14,7 @@ namespace FamilyVaultServer.Services.PrivMx.Models.Parameters
         public required string Description { get; set; }
         [JsonPropertyName("scope")]
         public required string Scope { get; set; }
+        [JsonPropertyName("policy")]
+        public PrivMxPolicy Policy = new PrivMxPolicy();
     }
-}   
+}
