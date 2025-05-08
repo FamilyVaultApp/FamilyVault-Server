@@ -1,5 +1,6 @@
 ﻿using FamilyVaultServer.Services.PrivMx.Models.Parameters;
 using FamilyVaultServer.Services.PrivMx.Models.Result;
+using FamilyVaultServer.Utils;
 using Microsoft.Extensions.Options;
 
 namespace FamilyVaultServer.Services.PrivMx
@@ -30,6 +31,7 @@ namespace FamilyVaultServer.Services.PrivMx
                 Name = name,
                 Description = description,
                 Scope = scope,
+                Policy = Policies.Default
             });
         }
 
