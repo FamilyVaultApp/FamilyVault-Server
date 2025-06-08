@@ -12,14 +12,20 @@ namespace FamilyVaultServer
 
             // Add service to the container.
             builder.Services.AddControllers();
-            
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.Configure<PrivMxOptions>(builder.Configuration.GetSection(PrivMxOptions.PrivMx));
-            
+
             builder.Services.AddSingleton<IPrivMxService, PrivMxService>();
             builder.Services.AddSingleton<IJoinStatusService, JoinStatusService>();
+
+            // Override appsettings by env variables
+            builder.Configuration
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddEnvironmentVariables();
 
             var app = builder.Build();
 

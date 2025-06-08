@@ -31,6 +31,12 @@
 
         private void SaveSolutionIdInFile(string solutionId)
         {
+            var directory = Path.GetDirectoryName(SolutionIdFilePath)!;
+
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
             File.WriteAllText(SolutionIdFilePath, solutionId);
         }
 

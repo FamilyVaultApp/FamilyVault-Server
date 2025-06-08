@@ -31,7 +31,7 @@ jobs:
       - name: Copy build
         run: cp -r /tmp/build_fv ./build_output
       - name: Create Docker image
-        run: docker build . --force-rm --no-cache -f cd.Dockerfile -t familyvault/server
+        run: docker build . --force-rm --no-cache -f Dockerfile -t familyvault/server
 
   restart:
     name: Restart FamilyVault server

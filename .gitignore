@@ -2,3 +2,4 @@
 obj/
 bin/
 volumes/
+build_output/
