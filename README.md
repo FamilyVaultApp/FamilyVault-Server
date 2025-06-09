@@ -27,6 +27,36 @@ Głównym celem projektu jest umożliwienie tworzenia bezpiecznych przestrzeni d
     *   Udostępnianie ID solucji PrivMx.
     *   Udostępnianie adresu URL PrivMx Bridge.
 
+## Uruchomienie
+
+Najprostszym i zalecanym przez nas sposobem uruchomienia serwera FamilyVault jest obraz Dockerowy.
+
+Przed wykorzystaniem tej metody musisz zapewnić działające instancje serwera PrivMX oraz MongoDB.
+Więcej informacji znajdziesz [tutaj](https://github.com/simplito/privmx-bridge-docker). 
+
+Obraz FamilyVaultServer możesz pobrać wykorzystując następujące polecenie:
+```bash
+docker pull ghcr.io/familyvaultapp/familyvaultserver:latest
+```
+
+Skonfigurować skonteneryzowany serwer FamilyVault możesz za pomocą zmiennych środowiskowych.
+Uruchomienie serwera z przykładową konfiguracją:
+```
+docker run 
+    -p 8080:8080 
+    -e PrivMx__Url="https://192.168.0.2:9111" 
+    -e PrivMx__ApiKeyId="ecf27cdb0d06919fd9c626d81382fc03" 
+    -e PrivMx__ApiKeySecret="8094267e11feb9733543783f393f3b46" 
+    ghcr.io/familyvaultapp/familyvaultserver:latest
+```
+#### Opis przykładowej konfiguracji
+
+- _PrivMx__Url_ – adres URL serwera PrivMX, z którym ma się komunikować FamilyVault. Pamiętaj, że zostanie on przesłany do hostów, dlatego musi być dla nich też dostępny!
+
+- _PrivMx__ApiKeyId_ – identyfikator klucza API wygenerowany przez PrivMx Bridge.
+
+- _PrivMx__ApiKeySecret_ – tajny klucz wygenerowany przez PrivMx Bridge.
+
 ## Technologie
 
 *   **Backend:** ASP.NET Core 8.0
@@ -38,37 +68,12 @@ Głównym celem projektu jest umożliwienie tworzenia bezpiecznych przestrzeni d
 
 Konfiguracja serwera znajduje się w plikach `appsettings.json` oraz `appsettings.Development.json` (dla środowiska deweloperskiego). Kluczowe ustawienia dotyczą połączenia z PrivMx Bridge:
 
-*   `PrivMx:Url`: Adres URL na którym jest uruchomiony PrivMx Bridge.
+*   `PrivMx:Url`: Adres URL, pod którym uruchomiony jest PrivMx Bridge. Pamiętaj, że zostanie on przesłany do hostów, dlatego musi być dla nich też dostępny!
 *   `PrivMx:ApiKeyId`: ID klucza API do PrivMx Bridge.
 *   `PrivMx:ApiKeySecret`: Sekret klucza API do PrivMx Bridge.
 *   `PrivMx:SolutionName`: Nazwa solucji w PrivMx.
 
 Serwer automatycznie przechowuje identyfikator solucji PrivMx w pliku `config/solution` w katalogu roboczym serwera (generowanym przy pierwszym uruchomieniu, jeśli plik nie istnieje).
-
-## Uruchomienie
-
-### Wymagania
-
-*   .NET SDK 8.0
-*   Docker i Docker Compose
-
-### Kroki
-
-1.  **Uruchomienie zależności (MongoDB, PrivMx Bridge):**
-    W głównym katalogu projektu wykonaj polecenie:
-    ```sh
-    docker-compose up -d mongodb privmx-bridge
-    ```
-    Poczekaj, aż usługi zostaną uruchomione (możesz sprawdzić logi za pomocą `docker-compose logs -f`).
-
-2.  **Uruchomienie serwera FamilyVault:**
-    *   **Z Visual Studio:** Otwórz plik solucji [`FamilyVaultServer.sln`](FamilyVaultServer.sln) i uruchom projekt (np. używając profilu `http` zdefiniowanego w [`launchSettings.json`](FamilyVaultServer/Properties/launchSettings.json)).
-    *   **Z linii poleceń:** Przejdź do katalogu `FamilyVaultServer/` i wykonaj:
-        ```sh
-        dotnet run
-        ```
-
-Część serwerowa domyślnie uruchomi się pod adresem `http://localhost:5024`. Dokumentacja API Swagger będzie dostępna pod adresem `http://localhost:5024/swagger` (w środowisku deweloperskim).
 
 ## API Endpoints
 
