@@ -15,7 +15,7 @@ namespace FamilyVaultServer.Services.PrivMx
         {
             _options = options;
             _client = new PrivMxBridgeClient(_options.Value);
-            _solutionProvider = new PrivMxSolutionProvider(this, _options.Value.SolutionName);
+            _solutionProvider = new PrivMxSolutionProvider(this, _options.Value.SolutionName, _options.Value.SolutionId);
         }
 
         public Task<string> GetSolutionId()
