@@ -1,22 +1,26 @@
 ﻿namespace FamilyVaultServer.Services.PrivMx
 {
-    public class PrivMxSolutionProvider(IPrivMxService privMxService, string solutionName) : IPrivMxSolutionProvider
+    public class PrivMxSolutionProvider(IPrivMxService privMxService, string solutionName, string? solutionId) : IPrivMxSolutionProvider
     {
         private IPrivMxService _privMxService = privMxService;
         private string _solutionName = solutionName;
 
         public async Task<string> GetSolutionId()
         {
-            var solutionId = GetSolutionIdFromFileOrNull();
+            var cachedSolutionId = GetSolutionIdFromFileOrNull();
 
-            if (solutionId is null)
+            if (cachedSolutionId is null)
             {
-                var createSolutionResult = await _privMxService.CreateSolution(_solutionName);
-                solutionId = createSolutionResult.SolutionId;
-                SaveSolutionIdInFile(solutionId);
+                if(solutionId is not null){
+                    cachedSolutionId = solutionId;
+                }else{
+                    var createSolutionResult = await _privMxService.CreateSolution(_solutionName);
+                    cachedSolutionId = createSolutionResult.SolutionId;
+                }
+                SaveSolutionIdInFile(cachedSolutionId);
             }
 
-            return solutionId;
+            return cachedSolutionId;
         }
 
         private string? GetSolutionIdFromFileOrNull()
